@@ -161,6 +161,99 @@ main{width:min(1100px,100%);margin:auto;padding:15px}
 }
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
+
+/* =========================================================
+   PRESENTATION MODE
+   Works as a TV/projector mode and as an iPhone-friendly
+   full-screen alternative when Safari blocks Fullscreen API.
+   ========================================================= */
+
+body.presentation-mode {
+  overflow: hidden;
+}
+
+body.presentation-mode header,
+body.presentation-mode .topbar,
+body.presentation-mode .counter,
+body.presentation-mode .controls,
+body.presentation-mode .called-box,
+body.presentation-mode .help,
+body.presentation-mode .toast {
+  display: none !important;
+}
+
+body.presentation-mode main {
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+body.presentation-mode .display {
+  width: 94vw;
+  height: 78dvh;
+  min-height: 0;
+  max-width: 1500px;
+  border-radius: 28px;
+}
+
+body.presentation-mode .display img {
+  width: 96%;
+  height: 96%;
+}
+
+body.presentation-mode .current-name {
+  margin-top: 14px;
+  font-size: clamp(28px, 5vw, 64px);
+}
+
+body.presentation-mode .status {
+  margin-top: 7px;
+  font-size: clamp(13px, 2vw, 22px);
+}
+
+.presentation-exit {
+  display: none;
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  right: 14px;
+  z-index: 100;
+  background: rgba(10,12,17,.82);
+  color: white;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  padding: 10px 15px;
+  font-size: 13px;
+  font-weight: 1000;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.presentation-mode .presentation-exit {
+  display: block;
+}
+
+@media(max-width:600px){
+  body.presentation-mode .display {
+    width: 96vw;
+    height: 72dvh;
+    border-radius: 20px;
+  }
+
+  body.presentation-mode .current-name {
+    margin-top: 10px;
+    font-size: clamp(24px, 7vw, 40px);
+  }
+
+  body.presentation-mode .status {
+    font-size: 13px;
+  }
+}
+
 @media(max-width:600px){
   header{padding-top:13px}
   main{padding:11px}
@@ -187,6 +280,8 @@ main{width:min(1100px,100%);margin:auto;padding:15px}
 </header>
 
 <main>
+  <button class="presentation-exit" id="presentationExit">✕ EXIT PRESENTATION</button>
+
   <div class="topbar">
     <div class="badge">🎯 <strong id="remainingTop">24</strong> CARDS LEFT</div>
     <div class="badge">CALLED <strong id="calledTop">0</strong></div>
@@ -225,7 +320,7 @@ main{width:min(1100px,100%);margin:auto;padding:15px}
   </section>
 </main>
 
-<!-- Background music: upload ace_max_racing_bingo_loop.wav beside index.html -->
+<!-- Background music: keep ace_max_racing_bingo_loop.wav beside index.html -->
 <audio id="backgroundMusic"
        src="ace_max_racing_bingo_loop.wav"
        loop
@@ -462,15 +557,48 @@ drawButton.addEventListener("click",drawNext);
 undoButton.addEventListener("click",undoLast);
 resetButton.addEventListener("click",resetGame);
 
-fullscreenButton.addEventListener("click",async()=>{
+const presentationExit = document.getElementById("presentationExit");
+
+async function enterPresentationMode(){
+  document.body.classList.add("presentation-mode");
+  showToast("📺 Presentation Mode");
+
+  // Use the browser Fullscreen API where it is supported.
+  // If iPhone Safari blocks it, the CSS presentation mode still works.
   try{
-    if(document.documentElement.requestFullscreen){
+    if(document.documentElement.requestFullscreen && !document.fullscreenElement){
       await document.documentElement.requestFullscreen();
-    }else{
-      showToast("Full screen is limited on this iPhone");
     }
-  }catch(e){
-    showToast("Use Safari's full-screen option if needed");
+  }catch(error){
+    // Expected on some iPhones/Safari versions.
+  }
+}
+
+async function exitPresentationMode(){
+  document.body.classList.remove("presentation-mode");
+
+  try{
+    if(document.fullscreenElement && document.exitFullscreen){
+      await document.exitFullscreen();
+    }
+  }catch(error){
+    // Ignore browser-specific fullscreen errors.
+  }
+}
+
+fullscreenButton.textContent = "📺 PRESENTATION";
+
+fullscreenButton.addEventListener("click", enterPresentationMode);
+presentationExit.addEventListener("click", exitPresentationMode);
+
+document.addEventListener("fullscreenchange",()=>{
+  // If the browser exits native fullscreen, keep presentation mode
+  // only if the user did not explicitly press EXIT.
+});
+
+document.addEventListener("keydown",event=>{
+  if(event.key === "Escape" && document.body.classList.contains("presentation-mode")){
+    exitPresentationMode();
   }
 });
 
