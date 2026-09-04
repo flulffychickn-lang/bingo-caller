@@ -322,28 +322,46 @@ body.presentation-mode .controls .presentation-button{
 /* Landscape phones / TVs / projectors */
 @media (orientation:landscape){
   body.presentation-mode main{
-    padding-top:max(6px, env(safe-area-inset-top));
+    padding-top:max(5px, env(safe-area-inset-top));
   }
 
+  /* Larger presentation title, but leave room for Exit */
   body.presentation-mode .presentation-title{
-    width:calc(100% - 210px);
+    width:calc(100% - 230px);
     margin-bottom:5px;
-    font-size:clamp(22px,4vw,44px);
+    font-size:clamp(22px,4vw,46px);
   }
 
+  /* MAXIMIZE THE CARD DISPLAY */
   body.presentation-mode .display{
-    width:min(90vw,1500px);
-    height:clamp(270px,61dvh,620px);
+    width:min(96vw,1600px);
+    height:clamp(360px,71dvh,610px);
+    flex:0 0 auto;
+    border-radius:24px;
   }
 
+  body.presentation-mode .display img{
+    width:98%;
+    height:98%;
+  }
+
+  /* Put the card name immediately above DRAW NEXT */
   body.presentation-mode .current-name{
-    margin-top:6px;
-    font-size:clamp(23px,3.8vw,52px);
+    position:fixed;
+    left:50%;
+    bottom:76px;
+    transform:translateX(-50%);
+    z-index:105;
+    width:92vw;
+    margin:0;
+    font-size:clamp(25px,4vw,54px);
+    line-height:1;
+    text-shadow:0 3px 12px rgba(0,0,0,.65);
   }
 
+  /* Keep the extra status out of the presentation area */
   body.presentation-mode .status{
-    margin-top:3px;
-    font-size:clamp(11px,1.4vw,17px);
+    display:none !important;
   }
 
   body.presentation-mode .controls{
@@ -359,22 +377,23 @@ body.presentation-mode .controls .presentation-button{
   }
 
   body.presentation-mode .display{
-    height:58dvh;
+    height:64dvh;
+    width:96vw;
     border-radius:18px;
   }
 
   body.presentation-mode .current-name{
-    margin-top:4px;
+    bottom:61px;
     font-size:clamp(20px,3.4vw,38px);
   }
 
   body.presentation-mode .status{
-    display:none;
+    display:none !important;
   }
 
   body.presentation-mode .controls{
     width:min(58vw,650px);
-    bottom:6px;
+    bottom:5px;
     padding:5px;
   }
 
