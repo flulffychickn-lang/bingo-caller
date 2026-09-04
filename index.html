@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0b0d12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Racing Bingo">
+<title>Ace & Max Racing Bingo</title>
+
+<style>
+:root{
+  --red:#e21b2d;
+  --red2:#ff3b4d;
+  --dark:#080a0f;
+  --panel:#12161e;
+  --panel2:#191e28;
+  --text:#fff;
+  --muted:#9da5b3;
+  --line:rgba(255,255,255,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--dark);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+body{
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(226,27,45,.18),transparent 35%),
+    linear-gradient(180deg,#0a0c11 0%,#080a0f 100%);
+}
+button{font:inherit;border:0;cursor:pointer}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.35;cursor:not-allowed}
+
+header{text-align:center;padding:18px 14px 10px}
+h1{
+  margin:0;
+  font-size:clamp(25px,6vw,54px);
+  font-weight:1000;
+  letter-spacing:1px;
+}
+.subtitle{
+  margin-top:5px;color:var(--muted);
+  font-size:clamp(12px,2.5vw,19px);
+  font-weight:800;letter-spacing:2px;
+}
+.checkered{
+  height:9px;margin:14px -14px 0;
+  background:repeating-conic-gradient(#fff 0 25%,#151515 0 50%) 50%/24px 24px;
+  border-top:3px solid var(--red);
+  border-bottom:3px solid var(--red);
+}
+
+main{width:min(1100px,100%);margin:auto;padding:15px}
+
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:10px;margin-bottom:12px;
+}
+.badge{
+  background:var(--panel);border:1px solid var(--line);
+  padding:8px 12px;border-radius:999px;
+  font-size:13px;font-weight:900;color:var(--muted);
+}
+.badge strong{color:#fff}
+
+.display{
+  width:100%;height:min(58vh,610px);min-height:300px;
+  background:#fff;border-radius:28px;
+  display:flex;justify-content:center;align-items:center;
+  overflow:hidden;position:relative;
+  box-shadow:0 18px 55px rgba(0,0,0,.55),0 0 0 4px #20252e;
+}
+.display::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 70px rgba(0,0,0,.10);
+}
+.display img{width:92%;height:92%;object-fit:contain;position:relative;z-index:1}
+.start-message{
+  color:#111;text-align:center;
+  font-size:clamp(30px,6vw,65px);
+  font-weight:1000;line-height:1.05;
+}
+.flash{animation:flash .45s ease}
+@keyframes flash{
+  0%{transform:scale(.94);opacity:.15}
+  55%{transform:scale(1.025);opacity:1}
+  100%{transform:scale(1);opacity:1}
+}
+
+.current-name{
+  margin-top:15px;text-align:center;
+  font-size:clamp(25px,5vw,48px);
+  font-weight:1000;text-transform:uppercase;
+}
+.counter{text-align:center;color:var(--muted);font-size:15px;margin:5px 0 13px}
+
+.controls{
+  display:flex;justify-content:center;align-items:center;
+  flex-wrap:wrap;gap:9px;
+}
+.btn{
+  min-height:48px;padding:12px 17px;border-radius:999px;
+  background:#fff;color:#111;font-weight:1000;
+  box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+.draw-button{
+  background:linear-gradient(135deg,var(--red),var(--red2));
+  color:#fff;font-size:21px;padding:15px 28px;
+  box-shadow:0 8px 25px rgba(226,27,45,.30);
+}
+.status{
+  min-height:27px;text-align:center;margin-top:10px;
+  color:#dce1e8;font-weight:800;font-size:15px;
+}
+
+.called-box{
+  margin:18px auto 0;padding:15px;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:1px solid var(--line);border-radius:20px;
+}
+.called-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:11px;
+}
+.called-title{font-size:16px;font-weight:1000}
+.clear-info{font-size:12px;color:var(--muted)}
+.called-list{
+  display:flex;flex-wrap:wrap;gap:7px;
+  max-height:135px;overflow-y:auto;
+}
+.called-item{
+  padding:8px 11px;border-radius:999px;
+  background:#292f39;border:1px solid rgba(255,255,255,.06);
+  font-size:13px;font-weight:800;
+}
+.called-item.latest{
+  background:var(--red);color:#fff;
+  box-shadow:0 4px 12px rgba(226,27,45,.3);
+}
+
+.help{
+  margin:15px auto 0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+}
+.help-card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:16px;padding:12px;text-align:center;
+}
+.help-card .icon{font-size:22px}
+.help-card strong{display:block;font-size:12px;margin-top:4px}
+.help-card span{font-size:11px;color:var(--muted)}
+
+.toast{
+  position:fixed;left:50%;bottom:24px;z-index:50;
+  transform:translate(-50%,20px);
+  background:#fff;color:#111;padding:11px 17px;
+  border-radius:999px;font-weight:900;
+  opacity:0;pointer-events:none;transition:.25s;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:600px){
+  header{padding-top:13px}
+  main{padding:11px}
+  .topbar{margin-bottom:10px}
+  .display{height:52vh;min-height:250px;border-radius:22px}
+  .display img{width:96%;height:96%}
+  .controls{gap:7px}
+  .btn{min-height:44px;padding:10px 13px;font-size:14px}
+  .draw-button{width:100%;font-size:20px;padding:15px}
+  .help{grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .help-card{padding:9px 5px}
+}
+@media(max-width:380px){
+  .help-card span{display:none}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>🏁 ACE & MAX RACING BINGO 🏎️</h1>
+  <div class="subtitle">READY, SET, BINGO!</div>
+  <div class="checkered"></div>
+</header>
+
+<main>
+  <div class="topbar">
+    <div class="badge">🎯 <strong id="remainingTop">24</strong> CARDS LEFT</div>
+    <div class="badge">CALLED <strong id="calledTop">0</strong></div>
+  </div>
+
+  <section class="display" id="display">
+    <div class="start-message">PRESS<br>🏁 DRAW NEXT 🏁</div>
+  </section>
+
+  <div class="current-name" id="currentName">LET'S RACE!</div>
+  <div class="counter" id="counter">0 of 24 called</div>
+
+  <div class="controls">
+    <button class="btn draw-button" id="drawButton">🏁 DRAW NEXT</button>
+    <button class="btn" id="soundButton">🔇 SOUND OFF</button>
+    <button class="btn" id="undoButton">↩ UNDO</button>
+    <button class="btn" id="resetButton">↻ RESET</button>
+    <button class="btn" id="fullscreenButton">⛶ FULL SCREEN</button>
+  </div>
+
+  <div class="status" id="status">Tap DRAW NEXT to start the race!</div>
+
+  <section class="called-box">
+    <div class="called-head">
+      <div class="called-title">🏁 CALLED SO FAR</div>
+      <div class="clear-info">No duplicates</div>
+    </div>
+    <div class="called-list" id="calledList"></div>
+  </section>
+
+  <section class="help">
+    <div class="help-card"><div class="icon">🎲</div><strong>RANDOM</strong><span>Every card once</span></div>
+    <div class="help-card"><div class="icon">↩</div><strong>UNDO</strong><span>Reverse last draw</span></div>
+    <div class="help-card"><div class="icon">📺</div><strong>TV READY</strong><span>Use full screen</span></div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   ACE & MAX RACING BINGO
+   24 UNIQUE PICTURE CARDS
+   Keep the "images" folder beside this index.html.
+   ========================================================= */
+
+const cards = [
+  {name:"Racetrack", image:"images/01_racetrack.png"},
+  {name:"Trophy", image:"images/02_trophy.png"},
+  {name:"Race Car", image:"images/04_race_car.png"},
+  {name:"Direction Sign", image:"images/05_direction_sign.png"},
+  {name:"Speedometer", image:"images/06_speedometer.png"},
+  {name:"Traffic Lights", image:"images/07_traffic_lights.png"},
+  {name:"Pit Stop", image:"images/08_pit_stop.png"},
+  {name:"Fuel Pump", image:"images/09_fuel_pump.png"},
+  {name:"Podium", image:"images/10_podium.png"},
+  {name:"Checkered Flag", image:"images/11_checkered_flag.png"},
+  {name:"Green Race Car", image:"images/12_green_race_car.png"},
+  {name:"Timer", image:"images/13_timer.png"},
+  {name:"Medal", image:"images/14_medal.png"},
+  {name:"Start Gate", image:"images/15_start_gate.png"},
+  {name:"Stopwatch", image:"images/16_stopwatch.png"},
+  {name:"Red Race Car", image:"images/17_red_race_car.png"},
+  {name:"Racing Helmet", image:"images/18_racing_helmet.png"},
+  {name:"Wheel", image:"images/19_wheel.png"},
+  {name:"Steering Wheel", image:"images/20_steering_wheel.png"},
+  {name:"Racing Gloves", image:"images/21_racing_gloves.png"},
+  {name:"Racing Driver", image:"images/22_racing_driver.png"},
+  {name:"Traffic Cone", image:"images/23_traffic_cone.png"},
+  {name:"Finish Gate", image:"images/24_finish_gate.png"},
+  {name:"Tools", image:"images/25_tools.png"}
+];
+
+let remainingCards = [...cards];
+let calledCards = [];
+let soundOn = false;
+let audioContext = null;
+
+const display = document.getElementById("display");
+const currentName = document.getElementById("currentName");
+const counter = document.getElementById("counter");
+const calledList = document.getElementById("calledList");
+const status = document.getElementById("status");
+const drawButton = document.getElementById("drawButton");
+const soundButton = document.getElementById("soundButton");
+const undoButton = document.getElementById("undoButton");
+const resetButton = document.getElementById("resetButton");
+const fullscreenButton = document.getElementById("fullscreenButton");
+const remainingTop = document.getElementById("remainingTop");
+const calledTop = document.getElementById("calledTop");
+const toast = document.getElementById("toast");
+
+function updateScreen(){
+  counter.textContent = `${calledCards.length} of ${cards.length} called`;
+  remainingTop.textContent = remainingCards.length;
+  calledTop.textContent = calledCards.length;
+
+  calledList.innerHTML = "";
+
+  calledCards.forEach((card,index)=>{
+    const item=document.createElement("div");
+    item.className="called-item";
+    if(index === calledCards.length-1) item.classList.add("latest");
+    item.textContent=card.name;
+    calledList.appendChild(item);
+  });
+
+  drawButton.disabled = remainingCards.length === 0;
+  undoButton.disabled = calledCards.length === 0;
+}
+
+function showToast(message){
+  toast.textContent=message;
+  toast.classList.add("show");
+  clearTimeout(showToast.timer);
+  showToast.timer=setTimeout(()=>toast.classList.remove("show"),1800);
+}
+
+function drawNext(){
+  if(remainingCards.length===0){
+    status.textContent="🏆 ALL 24 CARDS HAVE BEEN CALLED!";
+    showToast("🏆 Bingo draw complete!");
+    return;
+  }
+
+  const randomIndex=Math.floor(Math.random()*remainingCards.length);
+  const selectedCard=remainingCards.splice(randomIndex,1)[0];
+  calledCards.push(selectedCard);
+
+  display.innerHTML="";
+  const image=document.createElement("img");
+  image.src=selectedCard.image;
+  image.alt=selectedCard.name;
+  image.onerror=()=>status.textContent=`⚠️ Image missing: ${selectedCard.image}`;
+  display.appendChild(image);
+
+  display.classList.remove("flash");
+  void display.offsetWidth;
+  display.classList.add("flash");
+
+  currentName.textContent=selectedCard.name.toUpperCase();
+
+  if(remainingCards.length===0){
+    status.textContent="🏆 ALL CARDS HAVE BEEN CALLED!";
+  }else{
+    status.textContent="🎉 MARK IT ON YOUR BINGO CARD!";
+  }
+
+  if(soundOn) raceSound();
+  updateScreen();
+}
+
+function undoLast(){
+  if(calledCards.length===0) return;
+
+  const lastCard=calledCards.pop();
+  remainingCards.push(lastCard);
+
+  if(calledCards.length===0){
+    display.innerHTML='<div class="start-message">PRESS<br>🏁 DRAW NEXT 🏁</div>';
+    currentName.textContent="LET'S RACE!";
+    status.textContent="↩ LAST CALL UNDONE";
+  }else{
+    const previous=calledCards[calledCards.length-1];
+    display.innerHTML=`<img src="${previous.image}" alt="${previous.name}">`;
+    currentName.textContent=previous.name.toUpperCase();
+    status.textContent="↩ LAST CALL UNDONE";
+  }
+
+  updateScreen();
+}
+
+function resetGame(){
+  if(calledCards.length && !confirm("Reset the Bingo game and clear all called cards?")) return;
+
+  remainingCards=[...cards];
+  calledCards=[];
+
+  display.innerHTML='<div class="start-message">PRESS<br>🏁 DRAW NEXT 🏁</div>';
+  currentName.textContent="LET'S RACE!";
+  status.textContent="GAME RESET";
+
+  updateScreen();
+}
+
+function getAudio(){
+  if(!audioContext){
+    audioContext=new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if(audioContext.state==="suspended") audioContext.resume();
+  return audioContext;
+}
+
+function beep(frequency,duration,delay=0){
+  const ctx=getAudio();
+  const oscillator=ctx.createOscillator();
+  const gain=ctx.createGain();
+
+  oscillator.type="square";
+  oscillator.frequency.value=frequency;
+
+  gain.gain.setValueAtTime(.04,ctx.currentTime+delay);
+  gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+delay+duration);
+
+  oscillator.connect(gain);
+  gain.connect(ctx.destination);
+
+  oscillator.start(ctx.currentTime+delay);
+  oscillator.stop(ctx.currentTime+delay+duration);
+}
+
+function raceSound(){
+  beep(330,.08,0);
+  beep(440,.08,.10);
+  beep(550,.08,.20);
+  beep(660,.18,.30);
+}
+
+soundButton.addEventListener("click",()=>{
+  soundOn=!soundOn;
+  soundButton.textContent=soundOn ? "🔊 SOUND ON" : "🔇 SOUND OFF";
+  if(soundOn){
+    raceSound();
+    showToast("🔊 Sound enabled");
+  }
+});
+
+drawButton.addEventListener("click",drawNext);
+undoButton.addEventListener("click",undoLast);
+resetButton.addEventListener("click",resetGame);
+
+fullscreenButton.addEventListener("click",async()=>{
+  try{
+    if(document.documentElement.requestFullscreen){
+      await document.documentElement.requestFullscreen();
+    }else{
+      showToast("Full screen is limited on this iPhone");
+    }
+  }catch(e){
+    showToast("Use Safari's full-screen option if needed");
+  }
+});
+
+document.addEventListener("keydown",event=>{
+  if(event.code==="Space"){
+    event.preventDefault();
+    drawNext();
+  }
+});
+
+updateScreen();
+</script>
+</body>
+</html>
