@@ -202,6 +202,7 @@ main{width:min(1100px,100%);margin:auto;padding:15px}
   <div class="controls">
     <button class="btn draw-button" id="drawButton">🏁 DRAW NEXT</button>
     <button class="btn" id="soundButton">🔇 SOUND OFF</button>
+    <button class="btn" id="musicButton">🎵 MUSIC OFF</button>
     <button class="btn" id="undoButton">↩ UNDO</button>
     <button class="btn" id="resetButton">↻ RESET</button>
     <button class="btn" id="fullscreenButton">⛶ FULL SCREEN</button>
@@ -223,6 +224,12 @@ main{width:min(1100px,100%);margin:auto;padding:15px}
     <div class="help-card"><div class="icon">📺</div><strong>TV READY</strong><span>Use full screen</span></div>
   </section>
 </main>
+
+<!-- Background music: upload ace_max_racing_bingo_loop.wav beside index.html -->
+<audio id="backgroundMusic"
+       src="ace_max_racing_bingo_loop.wav"
+       loop
+       preload="auto"></audio>
 
 <div class="toast" id="toast"></div>
 
@@ -264,6 +271,10 @@ let remainingCards = [...cards];
 let calledCards = [];
 let soundOn = false;
 let audioContext = null;
+let musicOn = false;
+
+const backgroundMusic = document.getElementById("backgroundMusic");
+const musicButton = document.getElementById("musicButton");
 
 const display = document.getElementById("display");
 const currentName = document.getElementById("currentName");
@@ -306,6 +317,9 @@ function showToast(message){
 }
 
 function drawNext(){
+  // The first tap is a user interaction, so iPhone Safari allows audio to start here.
+  if(!musicOn) startMusic();
+
   if(remainingCards.length===0){
     status.textContent="🏆 ALL 24 CARDS HAVE BEEN CALLED!";
     showToast("🏆 Bingo draw complete!");
@@ -404,6 +418,36 @@ function raceSound(){
   beep(550,.08,.20);
   beep(660,.18,.30);
 }
+
+async function startMusic(){
+  try{
+    backgroundMusic.volume = 0.22;
+    await backgroundMusic.play();
+    musicOn = true;
+    musicButton.textContent = "🎵 MUSIC ON";
+  }catch(error){
+    musicOn = false;
+    musicButton.textContent = "🎵 MUSIC OFF";
+    showToast("Tap MUSIC again to start");
+  }
+}
+
+function stopMusic(){
+  backgroundMusic.pause();
+  backgroundMusic.currentTime = 0;
+  musicOn = false;
+  musicButton.textContent = "🎵 MUSIC OFF";
+}
+
+musicButton.addEventListener("click", async ()=>{
+  if(musicOn){
+    stopMusic();
+    showToast("🎵 Music off");
+  }else{
+    await startMusic();
+    if(musicOn) showToast("🎵 Music on");
+  }
+});
 
 soundButton.addEventListener("click",()=>{
   soundOn=!soundOn;
