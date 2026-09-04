@@ -162,7 +162,10 @@ main{width:min(1100px,100%);margin:auto;padding:15px}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 
-/* =========================================================
+/* Presentation title is only shown in presentation mode */
+.presentation-title { display: none; }
+
+ /* =========================================================
    PRESENTATION MODE
    Works as a TV/projector mode and as an iPhone-friendly
    full-screen alternative when Safari blocks Fullscreen API.
@@ -206,7 +209,8 @@ body.presentation-mode .controls .draw-button {
 body.presentation-mode .controls .sound-button,
 body.presentation-mode .controls .music-button,
 body.presentation-mode .controls .undo-button,
-body.presentation-mode .controls .reset-button {
+body.presentation-mode .controls .reset-button,
+body.presentation-mode .controls .presentation-button {
   display: none;
 }
 
@@ -232,6 +236,16 @@ body.presentation-mode .display {
 body.presentation-mode .display img {
   width: 96%;
   height: 96%;
+}
+
+body.presentation-mode .presentation-title {
+  display: block;
+  margin: 0 0 10px;
+  font-size: clamp(22px, 4vw, 48px);
+  font-weight: 1000;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 body.presentation-mode .current-name {
@@ -277,7 +291,17 @@ body.presentation-mode .presentation-exit {
     max-width: 1500px;
   }
 
-  body.presentation-mode .current-name {
+  body.presentation-mode .presentation-title {
+  display: block;
+  margin: 0 0 10px;
+  font-size: clamp(22px, 4vw, 48px);
+  font-weight: 1000;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+body.presentation-mode .current-name {
     font-size: clamp(24px, 4vw, 58px);
   }
 
@@ -293,7 +317,17 @@ body.presentation-mode .presentation-exit {
     border-radius: 20px;
   }
 
-  body.presentation-mode .current-name {
+  body.presentation-mode .presentation-title {
+  display: block;
+  margin: 0 0 10px;
+  font-size: clamp(22px, 4vw, 48px);
+  font-weight: 1000;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+body.presentation-mode .current-name {
     margin-top: 10px;
     font-size: clamp(24px, 7vw, 40px);
   }
@@ -335,6 +369,8 @@ body.presentation-mode .presentation-exit {
     <div class="badge">🎯 <strong id="remainingTop">24</strong> CARDS LEFT</div>
     <div class="badge">CALLED <strong id="calledTop">0</strong></div>
   </div>
+
+  <div class="presentation-title" id="presentationTitle">ACE & MAX RACING BINGO</div>
 
   <section class="display" id="display">
     <div class="start-message">PRESS<br>🏁 DRAW NEXT 🏁</div>
