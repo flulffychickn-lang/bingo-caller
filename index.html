@@ -175,11 +175,39 @@ body.presentation-mode {
 body.presentation-mode header,
 body.presentation-mode .topbar,
 body.presentation-mode .counter,
-body.presentation-mode .controls,
+body.presentation-mode .topbar,
+body.presentation-mode .counter,
 body.presentation-mode .called-box,
 body.presentation-mode .help,
 body.presentation-mode .toast {
   display: none !important;
+}
+
+body.presentation-mode .controls {
+  display: flex !important;
+  position: fixed;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 90;
+  width: min(96vw, 720px);
+  padding: 8px;
+  border-radius: 999px;
+  background: rgba(10,12,17,.82);
+  border: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body.presentation-mode .controls .draw-button {
+  flex: 1;
+}
+
+body.presentation-mode .controls .sound-button,
+body.presentation-mode .controls .music-button,
+body.presentation-mode .controls .undo-button,
+body.presentation-mode .controls .reset-button {
+  display: none;
 }
 
 body.presentation-mode main {
@@ -195,7 +223,7 @@ body.presentation-mode main {
 
 body.presentation-mode .display {
   width: 94vw;
-  height: 78dvh;
+  height: 76dvh;
   min-height: 0;
   max-width: 1500px;
   border-radius: 28px;
@@ -235,6 +263,27 @@ body.presentation-mode .status {
 
 body.presentation-mode .presentation-exit {
   display: block;
+}
+
+
+@media (orientation: landscape) {
+  body.presentation-mode main {
+    justify-content: center;
+  }
+
+  body.presentation-mode .display {
+    width: 88vw;
+    height: 76dvh;
+    max-width: 1500px;
+  }
+
+  body.presentation-mode .current-name {
+    font-size: clamp(24px, 4vw, 58px);
+  }
+
+  body.presentation-mode .status {
+    font-size: clamp(12px, 1.8vw, 20px);
+  }
 }
 
 @media(max-width:600px){
@@ -296,10 +345,10 @@ body.presentation-mode .presentation-exit {
 
   <div class="controls">
     <button class="btn draw-button" id="drawButton">🏁 DRAW NEXT</button>
-    <button class="btn" id="soundButton">🔇 SOUND OFF</button>
-    <button class="btn" id="musicButton">🎵 MUSIC OFF</button>
-    <button class="btn" id="undoButton">↩ UNDO</button>
-    <button class="btn" id="resetButton">↻ RESET</button>
+    <button class="btn sound-button" id="soundButton">🔇 SOUND OFF</button>
+    <button class="btn music-button" id="musicButton">🎵 MUSIC OFF</button>
+    <button class="btn undo-button" id="undoButton">↩ UNDO</button>
+    <button class="btn reset-button" id="resetButton">↻ RESET</button>
     <button class="btn" id="fullscreenButton">⛶ FULL SCREEN</button>
   </div>
 
@@ -316,7 +365,7 @@ body.presentation-mode .presentation-exit {
   <section class="help">
     <div class="help-card"><div class="icon">🎲</div><strong>RANDOM</strong><span>Every card once</span></div>
     <div class="help-card"><div class="icon">↩</div><strong>UNDO</strong><span>Reverse last draw</span></div>
-    <div class="help-card"><div class="icon">📺</div><strong>TV READY</strong><span>Use full screen</span></div>
+    <div class="help-card"><div class="icon">📺</div><strong>PRESENTATION</strong><span>Rotate for landscape</span></div>
   </section>
 </main>
 
@@ -414,6 +463,10 @@ function showToast(message){
 function drawNext(){
   // The first tap is a user interaction, so iPhone Safari allows audio to start here.
   if(!musicOn) startMusic();
+  if(!soundOn) {
+    soundOn = true;
+    soundButton.textContent = "🔊 SOUND ON";
+  }
 
   if(remainingCards.length===0){
     status.textContent="🏆 ALL 24 CARDS HAVE BEEN CALLED!";
@@ -561,16 +614,38 @@ const presentationExit = document.getElementById("presentationExit");
 
 async function enterPresentationMode(){
   document.body.classList.add("presentation-mode");
-  showToast("📺 Presentation Mode");
 
-  // Use the browser Fullscreen API where it is supported.
-  // If iPhone Safari blocks it, the CSS presentation mode still works.
+  // One direct tap starts both audio systems together.
+  soundOn = true;
+  soundButton.textContent = "🔊 SOUND ON";
+
+  try{
+    await startMusic();
+    raceSound();
+    showToast("📺 Presentation + 🎵 Music + 🔊 Sound");
+  }catch(error){
+    raceSound();
+    showToast("📺 Presentation Mode");
+  }
+
+  // Try native fullscreen where supported.
   try{
     if(document.documentElement.requestFullscreen && !document.fullscreenElement){
       await document.documentElement.requestFullscreen();
     }
   }catch(error){
-    // Expected on some iPhones/Safari versions.
+    // iPhone Safari may reject the native fullscreen request.
+  }
+
+  // Try locking to landscape where the browser supports it.
+  // iOS Safari commonly does not expose this API; the page still
+  // responds automatically when the user rotates the phone.
+  try{
+    if(screen.orientation && screen.orientation.lock){
+      await screen.orientation.lock("landscape");
+    }
+  }catch(error){
+    // Expected on unsupported iPhone/Safari versions.
   }
 }
 
