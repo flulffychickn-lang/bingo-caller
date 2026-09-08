@@ -1,204 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BILL TRACKER</title>
-  <meta name="theme-color" content="#0aa37e">
-  <meta name="description" content="A simple personal bill, expense, bank and cash tracker.">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icon-192.png" type="image/png">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ace & Max — Who's That Baby?</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#fff;
+  background:radial-gradient(circle at top,#293544 0%,#11151b 48%,#080a0d 100%);
+}
+header{text-align:center;padding:18px 15px 10px}
+h1{margin:0;font-size:clamp(28px,5vw,52px);font-weight:1000;letter-spacing:2px}
+.subtitle{margin-top:5px;color:#b9c1cc}
+.app{width:min(1050px,94vw);margin:auto;padding-bottom:30px}
+.panel{
+  background:rgba(25,29,36,.95);border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;padding:20px;box-shadow:0 15px 45px rgba(0,0,0,.35)
+}
+.setup{text-align:center;padding:38px 20px}
+.setup h2{margin:0 0 10px;font-size:30px}
+.setup p{color:#c4cad3;line-height:1.5;max-width:650px;margin:0 auto 22px}
+.file-input{display:none}
+button,.file-label{
+  border:0;border-radius:14px;padding:12px 18px;font-size:16px;font-weight:1000;
+  cursor:pointer;color:#fff;background:#343b47
+}
+button:hover,.file-label:hover{filter:brightness(1.12)}
+.primary{background:#e63946}.green{background:#238636}.blue{background:#2463d4}.gold{background:#b8860b}
+.file-label{display:inline-block}
+.info{margin-top:15px;color:#cbd2db;font-weight:800}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:16px;flex-wrap:wrap
+}
+.status-title{font-size:22px;font-weight:1000}
+.status-small{color:#b9c1cc;font-weight:800}
+.board{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;
+  max-width:820px;margin:0 auto
+}
+.card{
+  position:relative;min-width:0;padding:8px;border:3px solid transparent;
+  border-radius:18px;background:#202631;cursor:pointer;user-select:none;
+  transition:transform .15s,opacity .2s,filter .2s,border-color .2s
+}
+.card:hover{transform:translateY(-2px)}
+.card img{
+  width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
+  border-radius:12px;background:#0b0e12
+}
+.card-label{
+  text-align:center;font-weight:1000;font-size:20px;padding:10px 4px 6px
+}
+.card.eliminated{opacity:.25;filter:grayscale(1)}
+.card.eliminated::after{
+  content:"✕";position:absolute;inset:0;display:grid;place-items:center;
+  font-size:90px;font-weight:1000;color:#ff4d5a;text-shadow:0 3px 15px #000
+}
+.card.target{
+  border-color:#ffd166;box-shadow:0 0 0 3px rgba(255,209,102,.2)
+}
+.card.correct{
+  border-color:#48d597;background:#183527;opacity:1;filter:none
+}
+.card.wrong{
+  border-color:#ff5964;background:#3a171b;opacity:1;filter:none
+}
+.controls{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px
+}
+.message{
+  min-height:32px;text-align:center;margin:16px 0 5px;
+  font-size:20px;font-weight:1000
+}
+.instructions{text-align:center;color:#9fa8b4;font-size:14px;margin-top:13px}
+.hidden{display:none!important}
+
+.guess-mode .card.eliminated{pointer-events:none}
+.guess-mode .card{cursor:pointer}
+
+.reveal{
+  max-width:600px;margin:20px auto 0;padding:20px;text-align:center;
+  background:#11151b;border-radius:18px;border:1px solid rgba(255,255,255,.1)
+}
+.reveal-title{color:#aeb7c3;font-weight:900;letter-spacing:1px;text-transform:uppercase}
+.reveal-name{font-size:34px;font-weight:1000;color:#ffd166;margin:6px 0 14px}
+.reveal img{
+  width:min(420px,90%);aspect-ratio:4/3;object-fit:cover;border-radius:14px
+}
+
+@media(max-width:600px){
+  .app{width:97vw}.panel{padding:12px}
+  .board{gap:9px}.card-label{font-size:15px}
+  .card.eliminated::after{font-size:60px}
+}
+</style>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <div class="brand-block">
-        <div class="eyebrow">PERSONAL FINANCE</div>
-        <div class="title-row"><h1>BILL TRACKER</h1><button class="theme-icon" id="themeToggle" type="button" aria-label="Switch to dark theme" aria-pressed="false" title="Switch theme">☾</button></div>
-        <p class="subtitle">Bills, spending, banks, withdrawals and cash — kept simple.</p>
-      </div>
-      <div class="top-actions">
-        <button class="btn secondary" id="exportBtn" type="button">↥ Backup</button>
-        <label class="btn secondary file-btn" for="importInput">↧ Import</label>
-        <button class="btn info" id="exportCsvBtn" type="button">▤ Excel Report</button>
-        <button class="btn danger" id="clearDataBtn" type="button">♻ Clear Data</button>
-        <input type="file" id="importInput" accept="application/json,.json" hidden>
-      </div>
-    </header>
+<header>
+  <h1>🏁 ACE & MAX — WHO'S THAT BABY?</h1>
+  <div class="subtitle">Ask questions. Eliminate babies. Guess the mystery!</div>
+</header>
 
-    <nav class="tabs" aria-label="Main navigation">
-      <button class="tab active" type="button" data-section="dashboard">🏠 Dashboard</button>
-      <button class="tab" type="button" data-section="bills">🧾 Bills</button>
-      <button class="tab" type="button" data-section="cash">🏦 Bank & Cash</button>
-      <button class="tab" type="button" data-section="reports">📊 Reports</button>
-    </nav>
+<main class="app">
+<section class="panel setup" id="setupPanel">
+  <h2>📷 Add 4 Baby Photos</h2>
+  <p>
+    Choose exactly 4 baby pictures for this first test.
+    The pictures stay on this computer and are not uploaded anywhere.
+  </p>
+  <input class="file-input" type="file" id="photoInput" accept="image/*" multiple>
+  <label class="file-label primary" for="photoInput">📷 SELECT 4 PHOTOS</label>
+  <div class="info" id="selectedInfo">0 / 4 selected</div>
+  <div class="instructions">The game will automatically number them Baby 1–4.</div>
+</section>
 
-    <main>
-      <section class="section active" id="dashboard">
-        <div class="section-heading">
-          <div>
-            <span class="eyebrow">OVERVIEW</span>
-            <h2 id="dashboardMonthTitle">September 2026</h2>
-          </div>
-          <div class="month-control" aria-label="Dashboard month">
-            <button class="icon-btn" id="prevMonthBtn" type="button" aria-label="Previous month">‹</button>
-            <div class="month-picker-inline" id="dashboardMonthPicker">
-              <button class="month-display" id="dashboardMonthDisplay" type="button" aria-haspopup="dialog" aria-expanded="false">September 2026</button>
-              <div class="month-picker-menu" id="dashboardMonthMenu"></div>
-              <input type="month" id="dashboardMonth" aria-label="Select dashboard month">
-            </div>
-            <button class="icon-btn" id="nextMonthBtn" type="button" aria-label="Next month">›</button>
-          </div>
-        </div>
-
-        <div class="stat-grid">
-          <article class="stat-card accent"><span>Monthly Expenses</span><strong id="statTotalExpenses">₱0.00</strong><small>Paid bills & expenses</small></article>
-          <article class="stat-card"><span>Total Bills & Expenses</span><strong id="statTotalBillsExpenses">₱0.00</strong><small>Paid + unpaid for this month</small></article>
-          <article class="stat-card"><span>Bills Paid</span><strong id="statBillsPaid">₱0.00</strong><small id="statBillsPaidCount">0 paid</small></article>
-          <article class="stat-card"><span>Bills Remaining</span><strong id="statBillsRemaining">₱0.00</strong><small id="statBillsRemainingCount">0 unpaid</small></article>
-          <article class="stat-card"><span>Cash in Hand</span><strong id="statCash">₱0.00</strong><small>Current physical cash</small></article>
-        </div>
-
-        <div class="dashboard-grid">
-          <article class="card cash-summary-card">
-            <div class="card-title-row">
-              <div><span class="eyebrow">BANK POSITION</span><h3>Money Available</h3></div>
-              <button class="btn small" type="button" data-go="cash">Manage</button>
-            </div>
-            <div class="money-hero"><span>Total Available</span><strong id="totalAvailable">₱0.00</strong></div>
-            <div id="bankBalancesList" class="bank-list"></div>
-          </article>
-
-          <article class="card upcoming-card">
-            <div class="card-title-row">
-              <div><span class="eyebrow">NEXT DUE</span><h3>Upcoming Bills</h3></div>
-              <button class="btn small" type="button" data-go="bills">View all</button>
-            </div>
-            <div id="upcomingBills" class="list"></div>
-          </article>
-        </div>
-
-        <div class="dashboard-grid second-row">
-          <article class="card">
-            <div class="card-title-row"><div><span class="eyebrow">SPENDING</span><h3>Monthly Category Breakdown</h3></div></div>
-            <div id="categoryBreakdown" class="category-list"></div>
-          </article>
-          <article class="card">
-            <div class="card-title-row">
-              <div><span class="eyebrow">RECENT ACTIVITY</span><h3>Latest Bills</h3></div>
-              <button class="btn small" type="button" data-go="bills">Manage bills</button>
-            </div>
-            <div id="recentTransactions" class="list"></div>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" id="bills">
-        <div class="section-heading">
-          <div><span class="eyebrow">BILLS & SPENDING</span><h2>Manage Bills & Expenses</h2></div>
-          <button class="btn primary prominent" id="addBillBtn" type="button">＋ Add Bill / Expense</button>
-        </div>
-        <div class="tip-banner"><strong>One simple form for bills and everyday spending.</strong> Payment Source is optional and limited to two choices: Cash or GCash. Bank accounts and physical cash withdrawals are managed separately in Bank & Cash.</div>
-        <div class="toolbar card compact">
-          <input type="search" id="billSearch" placeholder="Search bills or spending…" aria-label="Search bills">
-          <select id="billStatusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="unpaid">Unpaid</option><option value="paid">Paid</option></select>
-          <select id="billCategoryFilter" aria-label="Filter by category"><option value="all">All categories</option></select>
-        </div>
-        <div class="card table-card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Bill / Expense</th><th>Category</th><th>Due / Date</th><th>Amount</th><th>Status</th><th>Payment</th><th>Actions</th></tr></thead>
-              <tbody id="billsTableBody"></tbody>
-            </table>
-          </div>
-          <div id="billsEmpty" class="empty-state hidden">No bills or spending records found.</div>
-        </div>
-      </section>
-
-      <section class="section" id="cash">
-        <div class="section-heading">
-          <div><span class="eyebrow">BANK & CASH</span><h2>Money Position</h2></div>
-          <div class="button-row">
-            <button class="btn secondary" id="addBankBtn" type="button">＋ Add Bank</button>
-            <button class="btn info" id="addTransactionBtn" type="button">＋ Bank Transaction</button>
-            <button class="btn transfer" id="addTransferBtn" type="button">⇄ Fast Transfer</button>
-            <button class="btn primary prominent" id="addWithdrawalBtn" type="button">＋ Cash Withdrawal</button>
-          </div>
-        </div>
-
-        <div class="stat-grid three">
-          <article class="stat-card"><span>Total Bank Balance</span><strong id="totalBankBalance">₱0.00</strong><small>Across all banks</small></article>
-          <article class="stat-card"><span>Cash in Hand</span><strong id="cashInHand">₱0.00</strong><small>Physical cash</small></article>
-          <article class="stat-card accent"><span>Total Available</span><strong id="cashTotalAvailable">₱0.00</strong><small>Bank + cash</small></article>
-        </div>
-
-        <div class="card">
-          <div class="card-title-row"><div><span class="eyebrow">BANK ACCOUNTS</span><h3>Current Balances</h3></div></div>
-          <div id="bankCards" class="bank-grid"></div>
-        </div>
-
-        <div class="card table-card">
-          <div class="card-title-row"><div><span class="eyebrow">PHYSICAL CASH</span><h3>Cash Withdrawal History</h3></div></div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Date</th><th>Bank</th><th>Money Withdrawn</th><th>Cash Used</th><th>Cash Remaining</th><th>Notes</th><th>Actions</th></tr></thead>
-              <tbody id="withdrawalsTableBody"></tbody>
-            </table>
-          </div>
-          <div id="withdrawalsEmpty" class="empty-state hidden">No cash withdrawals yet.</div>
-        </div>
-
-        <div class="card table-card">
-          <div class="card-title-row"><div><span class="eyebrow">BANK ACTIVITY</span><h3>Bank Transactions & Transfers</h3></div></div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Date</th><th>Bank</th><th>Type</th><th>Amount</th><th>Notes</th><th>Actions</th></tr></thead>
-              <tbody id="bankTransactionsTableBody"></tbody>
-            </table>
-          </div>
-          <div id="bankTransactionsEmpty" class="empty-state hidden">No bank transactions yet.</div>
-        </div>
-      </section>
-
-      <section class="section" id="reports">
-        <div class="section-heading">
-          <div><span class="eyebrow">REPORTS</span><h2>Monthly Reports</h2></div>
-          <div class="report-month-wrap"><label for="reportMonthDisplay">Month</label><div class="month-picker-inline" id="reportMonthPicker"><button class="month-display report" id="reportMonthDisplay" type="button" aria-haspopup="dialog" aria-expanded="false">September 2026</button><div class="month-picker-menu" id="reportMonthMenu"></div><input type="month" id="reportMonth" aria-label="Report month"></div></div>
-        </div>
-        <div class="stat-grid three">
-          <article class="stat-card"><span>Monthly Expenses</span><strong id="reportTotal">₱0.00</strong><small id="reportMonthLabel">Selected month</small></article>
-          <article class="stat-card accent"><span>Total Bills & Expenses</span><strong id="reportGrandTotal">₱0.00</strong><small>Paid + unpaid for this month</small></article>
-          <article class="stat-card"><span>Bills Paid</span><strong id="reportPaid">₱0.00</strong><small>Paid during selected month</small></article>
-          <article class="stat-card"><span>Bills Outstanding</span><strong id="reportOutstanding">₱0.00</strong><small>Due in selected month</small></article>
-        </div>
-        <div class="dashboard-grid">
-          <article class="card"><span class="eyebrow">CATEGORY</span><h3>Expense Breakdown</h3><div id="reportCategories" class="category-list large"></div></article>
-          <article class="card"><span class="eyebrow">MONTH COMPARISON</span><h3>Recent Monthly Totals</h3><div id="monthlyHistory" class="history-list"></div></article>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">BATS</footer>
+<section class="panel hidden" id="gamePanel">
+  <div class="topbar">
+    <div>
+      <div class="status-title">❓ WHO'S THAT BABY?</div>
+      <div class="status-small" id="phaseText">Ask a Yes/No question and eliminate babies.</div>
+    </div>
+    <div class="status-small" id="remainingText">Possible babies: 4</div>
   </div>
 
-  <dialog id="modal">
-    <form id="modalForm" novalidate>
-      <div class="modal-head">
-        <div><span class="eyebrow" id="modalEyebrow">ENTRY</span><h3 id="modalTitle">Add</h3></div>
-        <button class="icon-btn" id="modalCloseBtn" type="button" aria-label="Close">×</button>
-      </div>
-      <div id="modalBody"></div>
-      <div class="modal-actions"><button class="btn secondary" id="modalCancelBtn" type="button">Cancel</button><button class="btn primary prominent" id="modalSaveBtn" type="submit">Save</button></div>
-    </form>
-  </dialog>
+  <div class="board" id="board"></div>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js', {updateViaCache: 'none'}).then(reg => { reg.update().catch(() => {}); }).catch(() => {});
-    }
-  </script>
+  <div class="message" id="message">
+    Ask your first question, then tap the babies that should be eliminated.
+  </div>
+
+  <div class="controls">
+    <button class="gold" id="guessButton">🎯 MAKE GUESS</button>
+    <button class="green hidden" id="revealButton">👀 REVEAL ANSWER</button>
+    <button class="blue" id="newGameButton">🔄 NEW GAME</button>
+    <button id="clearButton">🗑️ CHANGE PHOTOS</button>
+  </div>
+
+  <div class="instructions">
+    Normal mode: tap a baby to ❌ eliminate it. Tap again to restore it.
+    <br>When ready, press MAKE GUESS and then choose the baby you think it is.
+  </div>
+
+  <div class="reveal hidden" id="reveal">
+    <div class="reveal-title" id="revealTitle">🎉 THE MYSTERY BABY IS</div>
+    <div class="reveal-name" id="revealName"></div>
+    <img id="revealImage" alt="Mystery baby reveal">
+  </div>
+</section>
+</main>
+
+<script>
+(() => {
+"use strict";
+
+const TOTAL = 4;
+
+const photoInput = document.getElementById("photoInput");
+const selectedInfo = document.getElementById("selectedInfo");
+const setupPanel = document.getElementById("setupPanel");
+const gamePanel = document.getElementById("gamePanel");
+const board = document.getElementById("board");
+const message = document.getElementById("message");
+const remainingText = document.getElementById("remainingText");
+const phaseText = document.getElementById("phaseText");
+const guessButton = document.getElementById("guessButton");
+const revealButton = document.getElementById("revealButton");
+const newGameButton = document.getElementById("newGameButton");
+const clearButton = document.getElementById("clearButton");
+const reveal = document.getElementById("reveal");
+const revealTitle = document.getElementById("revealTitle");
+const revealName = document.getElementById("revealName");
+const revealImage = document.getElementById("revealImage");
+
+let photos = [];
+let mysteryIndex = -1;
+let eliminated = new Set();
+let guessMode = false;
+let revealed = false;
+
+function revokePhotos() {
+  photos.forEach(photo => URL.revokeObjectURL(photo.url));
+}
+
+function shuffle(array) {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function startNewGame() {
+  if (photos.length !== TOTAL) return;
+
+  mysteryIndex = Math.floor(Math.random() * TOTAL);
+  eliminated.clear();
+  guessMode = false;
+  revealed = false;
+
+  reveal.classList.add("hidden");
+  revealButton.classList.add("hidden");
+  guessButton.classList.remove("hidden");
+  phaseText.textContent = "Ask a Yes/No question and eliminate babies.";
+  message.textContent = "Ask your question, then tap the babies that should be eliminated.";
+
+  renderBoard();
+}
+
+function renderBoard() {
+  board.innerHTML = "";
+
+  photos.forEach((photo, index) => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "card";
+
+    if (eliminated.has(index)) card.classList.add("eliminated");
+
+    const img = document.createElement("img");
+    img.src = photo.url;
+    img.alt = `Baby ${index + 1}`;
+
+    const label = document.createElement("div");
+    label.className = "card-label";
+    label.textContent = `BABY ${index + 1}`;
+
+    card.append(img, label);
+
+    card.addEventListener("click", () => {
+      if (revealed) return;
+
+      if (guessMode) {
+        makeGuess(index);
+        return;
+      }
+
+      if (eliminated.has(index)) {
+        eliminated.delete(index);
+      } else {
+        eliminated.add(index);
+      }
+
+      if (eliminated.size === TOTAL) {
+        message.textContent = "⚠️ Everyone is eliminated. Restore at least one baby.";
+      } else {
+        message.textContent = "Baby marked. Ask another question or make your guess.";
+      }
+
+      updateBoardState();
+    });
+
+    board.appendChild(card);
+  });
+
+  updateBoardState();
+}
+
+function updateBoardState() {
+  board.querySelectorAll(".card").forEach((card, index) => {
+    card.classList.toggle("eliminated", eliminated.has(index));
+  });
+
+  remainingText.textContent = `Possible babies: ${TOTAL - eliminated.size}`;
+}
+
+function enterGuessMode() {
+  if (revealed) return;
+
+  const possible = TOTAL - eliminated.size;
+
+  if (possible === 0) {
+    message.textContent = "⚠️ Restore at least one baby before guessing.";
+    return;
+  }
+
+  guessMode = true;
+  board.classList.add("guess-mode");
+  guessButton.classList.add("hidden");
+  phaseText.textContent = "NOW GUESS! Tap the baby you think is the mystery.";
+  message.textContent = "🎯 Tap one of the remaining babies to make your guess.";
+}
+
+function makeGuess(index) {
+  if (!guessMode || revealed) return;
+
+  guessMode = false;
+  board.classList.remove("guess-mode");
+
+  const cards = board.querySelectorAll(".card");
+  cards.forEach(card => card.disabled = true);
+
+  const correct = index === mysteryIndex;
+
+  if (correct) {
+    cards[index].classList.remove("eliminated");
+    cards[index].classList.add("correct");
+    message.textContent = "🎉 CORRECT! You found the mystery baby!";
+    revealTitle.textContent = "🎉 YOU GOT IT!";
+  } else {
+    cards[index].classList.add("wrong");
+    cards[mysteryIndex].classList.remove("eliminated");
+    cards[mysteryIndex].classList.add("correct");
+    message.textContent = "❌ WRONG! The mystery baby is highlighted in green.";
+    revealTitle.textContent = "❌ THE MYSTERY BABY WAS";
+  }
+
+  revealButton.classList.remove("hidden");
+  revealButton.dataset.index = String(mysteryIndex);
+}
+
+function revealAnswer() {
+  if (mysteryIndex < 0) return;
+
+  const photo = photos[mysteryIndex];
+
+  revealName.textContent = `BABY ${mysteryIndex + 1}`;
+  revealImage.src = photo.url;
+  revealImage.alt = `Baby ${mysteryIndex + 1}`;
+  reveal.classList.remove("hidden");
+  revealed = true;
+
+  revealButton.classList.add("hidden");
+  phaseText.textContent = "Round complete!";
+  message.textContent = "🏁 Start a NEW GAME for another mystery baby.";
+}
+
+photoInput.addEventListener("change", () => {
+  const files = Array.from(photoInput.files || [])
+    .filter(file => file.type.startsWith("image/"))
+    .slice(0, TOTAL);
+
+  if (files.length !== TOTAL) {
+    selectedInfo.textContent = `${files.length} / ${TOTAL} selected — please select exactly 4 images.`;
+    return;
+  }
+
+  revokePhotos();
+
+  photos = files.map(file => ({
+    url: URL.createObjectURL(file)
+  }));
+
+  selectedInfo.textContent = "✅ 4 / 4 selected";
+  setupPanel.classList.add("hidden");
+  gamePanel.classList.remove("hidden");
+
+  startNewGame();
+});
+
+guessButton.addEventListener("click", enterGuessMode);
+revealButton.addEventListener("click", revealAnswer);
+newGameButton.addEventListener("click", startNewGame);
+
+clearButton.addEventListener("click", () => {
+  if (!confirm("Remove the 4 photos and choose new ones?")) return;
+
+  revokePhotos();
+  photos = [];
+  mysteryIndex = -1;
+  eliminated.clear();
+  guessMode = false;
+  revealed = false;
+  photoInput.value = "";
+
+  board.innerHTML = "";
+  gamePanel.classList.add("hidden");
+  setupPanel.classList.remove("hidden");
+  selectedInfo.textContent = "0 / 4 selected";
+});
+
+window.addEventListener("beforeunload", revokePhotos);
+})();
+</script>
 </body>
 </html>
