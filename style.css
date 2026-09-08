@@ -1,0 +1,874 @@
+:root{
+  --bg:#f2faf7; --panel:#fff; --text:#17342d; --muted:#687d76; --border:#d6e6df;
+  --accent:#0aa37e; --accent-strong:#08765c; --accent-soft:#e4f8f0;
+  --success:#15845f; --success-soft:#e8f8f1; --danger:#c83b48; --danger-soft:#fff0f2;
+  --warning:#bf7810; --warning-soft:#fff7e7; --info:#3477c7; --info-soft:#eaf2ff;
+  --shadow:0 14px 32px rgba(26,70,57,.10); --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(135deg,#e6f8f0 0%,#fffdf8 45%,#edf3ff 100%);color:var(--text);min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 8% 5%,rgba(10,163,126,.13),transparent 26%),radial-gradient(circle at 90% 8%,rgba(52,119,199,.10),transparent 25%),radial-gradient(circle at 50% 100%,rgba(255,193,7,.05),transparent 28%);z-index:-1}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app-shell{max-width:1280px;margin:0 auto;padding:24px}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:18px}.eyebrow{display:block;font-size:11px;letter-spacing:.11em;font-weight:850;color:var(--muted);text-transform:uppercase;margin-bottom:5px}h1,h2,h3,p{margin:0}h1{font-size:32px;line-height:1.1}h2{font-size:25px}h3{font-size:17px}.subtitle{color:var(--muted);margin-top:6px}
+.top-actions,.button-row,.month-control{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tabs{display:flex;gap:8px;overflow:auto;padding:6px;margin:0 0 20px;background:rgba(255,255,255,.80);border:1px solid rgba(214,230,223,.95);border-radius:16px;box-shadow:0 5px 18px rgba(32,78,64,.04)}
+.tab{border:1px solid transparent;background:transparent;color:#35524a;padding:12px 16px;border-radius:11px;font-weight:850;white-space:nowrap;min-height:44px}.tab:hover{background:#f1f8f5}.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 7px 17px rgba(10,163,126,.23)}
+.section{display:none}.section.active{display:block}.section-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:8px 0 16px}
+.btn{border:1px solid #c9ddd5;border-radius:11px;padding:10px 14px;font-weight:850;background:#fff;color:var(--text);min-height:44px;transition:.16s ease;box-shadow:0 2px 7px rgba(32,78,64,.06)}.btn:hover{transform:translateY(-1px);box-shadow:0 8px 17px rgba(32,78,64,.12)}.btn:active{transform:translateY(0)}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 8px 17px rgba(10,163,126,.22)}.btn.primary:hover{background:var(--accent-strong);border-color:var(--accent-strong)}.btn.prominent{font-size:14px;padding-left:16px;padding-right:16px}.btn.secondary{background:#f8fbfa;border-color:#cbded6}.btn.secondary:hover{background:#eaf6f1}.btn.info{background:var(--info);border-color:var(--info);color:#fff;box-shadow:0 8px 17px rgba(52,119,199,.18)}.btn.transfer{background:#7b55c7;border-color:#7b55c7;color:#fff;box-shadow:0 8px 17px rgba(123,85,199,.18)}.btn.transfer:hover{background:#6542ad;border-color:#6542ad}.btn.small{min-height:38px;padding:7px 11px;font-size:13px}.file-btn{display:flex;align-items:center}
+.icon-btn{width:44px;height:44px;border:1px solid #cdded7;border-radius:11px;background:#fff;color:var(--text);font-size:22px;display:grid;place-items:center;transition:.16s ease}.icon-btn:hover{background:var(--accent-soft);border-color:#a9d9c9}
+.month-display{min-height:44px;min-width:190px;padding:10px 14px;border:1px solid #cdded7;border-radius:11px;background:#fff;color:var(--text);font-weight:850;text-align:center}.month-display:hover{border-color:#a9d9c9;background:#fbfffd}.month-display.report{min-width:180px}.month-control input[type="month"],.report-month-wrap input[type="month"]{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+.report-month-wrap{display:flex;align-items:center;gap:8px}.report-month-wrap label{font-size:12px;font-weight:850;color:var(--muted)}
+input,select,textarea{width:100%;border:1px solid #d8e1ec;border-radius:11px;background:#fff;color:var(--text);padding:11px 12px;min-height:44px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(10,163,126,.12)}
+.toolbar{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:12px}.toolbar.card{padding:12px}
+.tip-banner{margin:0 0 12px;padding:12px 14px;background:linear-gradient(90deg,#eefaf5,#eff6ff);border:1px solid var(--border);border-radius:13px;color:#35524a;font-size:13px}.tip-banner strong{color:var(--text)}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}.compact{padding:12px}.table-card{padding:0;overflow:hidden}.table-card>.card-title-row{padding:18px 18px 0;margin-bottom:12px}.table-card>.card-title-row .eyebrow{margin-bottom:4px}.table-card>.table-wrap{margin-top:0}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}.stat-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow)}.stat-card span{color:var(--muted);font-size:13px}.stat-card strong{display:block;font-size:25px;margin:6px 0 3px}.stat-card small{color:var(--muted)}.stat-card.accent{background:linear-gradient(135deg,#176751,#0aa37e);border-color:#0aa37e;color:#fff}.stat-card.accent span,.stat-card.accent small{color:#dff8ef}
+.dashboard-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-bottom:16px}.second-row{grid-template-columns:1fr 1fr}.card-title-row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:14px}.money-hero{padding:14px 0 10px;border-bottom:1px solid var(--border);margin-bottom:8px}.money-hero span{display:block;color:var(--muted);font-size:13px}.money-hero strong{font-size:34px;display:block;margin-top:4px}
+.bank-list,.list,.category-list,.history-list{display:grid;gap:9px}.bank-row,.list-row,.category-row,.history-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}.bank-row:last-child,.list-row:last-child,.category-row:last-child,.history-row:last-child{border-bottom:0}.sub,.table-sub{display:block;color:var(--muted);font-size:12px;margin-top:2px}.amount{font-weight:850}.empty-state{padding:28px;text-align:center;color:var(--muted)}.hidden{display:none!important}
+.badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:850}.badge.paid{background:var(--success-soft);color:var(--success)}.badge.unpaid{background:var(--danger-soft);color:var(--danger)}
+.table-wrap{width:100%;overflow-x:auto;overflow-y:hidden}.table-wrap table{width:100%;border-collapse:collapse;min-width:860px;table-layout:auto}.table-wrap th,.table-wrap td{text-align:left;padding:13px 15px;border-bottom:1px solid var(--border);white-space:nowrap;font-size:13px;vertical-align:middle}.table-wrap td.notes-cell,.table-wrap td.notes-aware{white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-break:anywhere;hyphens:auto;line-height:1.4;max-width:260px;min-width:150px}.table-wrap td.notes-cell .table-sub,.table-wrap td.notes-aware .table-sub{white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-break:anywhere}.table-wrap th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:#fafbfd}.table-wrap tr:last-child td{border-bottom:0}.action-cell{display:flex;gap:6px;align-items:center}.mini-btn{border:1px solid #cbded6;background:#fff;color:var(--text);border-radius:8px;padding:8px 10px;font-size:12px;font-weight:850;transition:.14s ease;min-height:36px}.mini-btn:hover{background:#edf7f3;border-color:#a9d9c9}.mini-btn.danger{color:#fff;background:var(--danger);border-color:var(--danger)}.mini-btn.success-action{color:#fff;background:var(--success);border-color:var(--success)}
+.bank-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.bank-card{border:1px solid var(--border);border-radius:15px;padding:15px;background:linear-gradient(180deg,#fbfffd,#f1f8f5);box-shadow:0 4px 12px rgba(32,78,64,.05)}.bank-card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.bank-name{font-weight:900}.bank-balance{font-size:25px;font-weight:900;margin:8px 0}.bank-id{font-size:11px;color:var(--muted)}.bank-actions{display:flex;gap:7px;margin-top:8px}.icon-mini{width:36px;height:36px;border:1px solid var(--border);border-radius:9px;background:#fff}.category-bar{height:7px;background:#edf0f5;border-radius:999px;overflow:hidden;margin-top:7px}.category-fill{height:100%;background:var(--accent);border-radius:999px}.category-row{grid-template-columns:1fr auto}.category-meta{min-width:0}.category-right{text-align:right}.history-row.current{background:var(--accent-soft);margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:10px;border-bottom:0}.large .category-row{padding:13px 0}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:22px 0 8px}
+dialog{width:min(680px,calc(100% - 24px));border:0;border-radius:20px;padding:0;box-shadow:0 24px 70px rgba(11,23,45,.25)}dialog::backdrop{background:rgba(15,23,42,.45)}#modal form{padding:20px}.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:850;color:var(--muted)}.field-help{font-size:11px;line-height:1.35;color:var(--muted)}textarea{resize:vertical;min-height:90px}
+.toast{position:fixed;right:20px;bottom:20px;max-width:min(420px,calc(100% - 40px));background:var(--text);color:#fff;padding:12px 14px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s;z-index:30}.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:1000px){.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-grid,.second-row{grid-template-columns:1fr}.bank-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.topbar{flex-direction:column}.top-actions{width:100%}.top-actions .btn{flex:1}}
+@media(max-width:700px){.app-shell{padding:14px}.section-heading{align-items:flex-start;flex-direction:column}.stat-grid,.stat-grid.three{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.bank-grid{grid-template-columns:1fr}.button-row,.button-row .btn{width:100%}.month-control{width:100%}.month-display{min-width:0;flex:1}.top-actions{display:grid;grid-template-columns:1fr 1fr}.top-actions .btn{width:100%}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.report-month-wrap{width:100%}.report-month-wrap .month-display{flex:1}h1{font-size:27px}.table-wrap table{min-width:1050px}}
+@media(max-width:430px){.tabs{gap:4px}.tab{padding:10px 12px;font-size:13px}.top-actions{grid-template-columns:1fr}.stat-card strong{font-size:23px}.money-hero strong{font-size:30px}}
+
+.table-card > .card-title-row{align-items:center}.table-card > .card-title-row h3{line-height:1.2}.transfer-badge{background:#f0eaff;color:#6b48b5}.transfer-arrow{font-weight:900;color:#6b48b5;margin:0 4px}.transfer-help{margin:0 0 14px;padding:11px 13px;border-radius:11px;background:#f3efff;border:1px solid #dfd2ff;color:#5d447f;font-size:12px;line-height:1.45}
+
+/* =========================================================
+   MOBILE-FIRST POLISH — Phase 1.5
+   ========================================================= */
+@media (max-width:700px){
+  .app-shell{padding:10px 10px 18px}
+  body{font-size:15px}
+  .topbar{gap:12px;margin-bottom:12px}
+  .subtitle{font-size:13px;line-height:1.4}
+  .tabs{position:sticky;top:8px;z-index:20;margin-bottom:14px;padding:4px;border-radius:14px}
+  .tab{flex:1 0 auto;min-width:0;padding:10px 10px;font-size:12px;min-height:44px}
+  .section-heading{gap:10px;margin-bottom:12px}
+  .section-heading h2{font-size:22px;line-height:1.18}
+  .eyebrow{font-size:10px}
+  .card{padding:14px;border-radius:16px}
+  .stat-grid,.stat-grid.three{gap:9px}
+  .stat-card{padding:13px;border-radius:14px}
+  .stat-card strong{font-size:22px;word-break:break-word}
+  .dashboard-grid,.second-row{gap:10px}
+  .money-hero{padding:11px 0 9px}
+  .money-hero strong{font-size:29px}
+  .bank-row,.list-row,.category-row,.history-row{gap:8px;padding:9px 0}
+  .button-row{gap:8px}
+  .button-row .btn{width:100%}
+  .top-actions{width:100%;gap:8px}
+  .top-actions .btn{min-height:46px}
+  .month-control{width:100%;gap:6px}
+  .month-control .month-display{flex:1;min-width:0}
+  .report-month-wrap{gap:6px}
+  .report-month-wrap .month-display{min-width:0}
+  .toolbar.card{gap:8px}
+  input,select,textarea{font-size:16px;min-height:46px}
+  .btn{min-height:46px}
+  .mini-btn{min-height:40px;padding:8px 9px}
+  .action-cell{flex-wrap:wrap;justify-content:flex-start}
+
+  /* Turn data tables into readable stacked cards on phones. */
+  .table-card{overflow:visible}
+  .table-card>.card-title-row{padding:14px 14px 0;margin-bottom:8px}
+  .table-wrap{overflow:visible}
+  .table-wrap table{display:block;width:100%;min-width:0;border:0;background:transparent}
+  .table-wrap thead{display:none}
+  .table-wrap tbody{display:grid;gap:10px}
+  .table-wrap tr{display:grid;grid-template-columns:1fr 1fr;gap:0 10px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:10px 11px;box-shadow:0 5px 14px rgba(26,70,57,.06)}
+  .table-wrap td{display:grid;grid-template-columns:minmax(78px,35%) 1fr;gap:8px;align-items:start;padding:6px 0;border:0;white-space:normal;font-size:13px;min-width:0;overflow-wrap:anywhere;word-break:break-word;line-height:1.35}
+  .table-wrap td::before{font-size:10px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .table-wrap td.notes-cell,.table-wrap td.notes-aware{max-width:none;min-width:0;white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+
+  /* Bills table */
+  #billsTableBody td:nth-child(1)::before{content:'Bill / Expense'}
+  #billsTableBody td:nth-child(2)::before{content:'Category'}
+  #billsTableBody td:nth-child(3)::before{content:'Date'}
+  #billsTableBody td:nth-child(4)::before{content:'Amount'}
+  #billsTableBody td:nth-child(5)::before{content:'Status'}
+  #billsTableBody td:nth-child(6)::before{content:'Payment'}
+  #billsTableBody td:nth-child(7)::before{content:'Actions'}
+  #billsTableBody td:nth-child(7){display:flex;grid-column:1/-1;border-top:1px solid var(--border);margin-top:4px;padding-top:9px}
+
+  /* Physical cash */
+  #withdrawalsTableBody td:nth-child(1)::before{content:'Date'}
+  #withdrawalsTableBody td:nth-child(2)::before{content:'Bank'}
+  #withdrawalsTableBody td:nth-child(3)::before{content:'Withdrawn'}
+  #withdrawalsTableBody td:nth-child(4)::before{content:'Used'}
+  #withdrawalsTableBody td:nth-child(5)::before{content:'Remaining'}
+  #withdrawalsTableBody td:nth-child(6)::before{content:'Notes'}
+  #withdrawalsTableBody td:nth-child(7)::before{content:'Actions'}
+  #withdrawalsTableBody td:nth-child(7){display:flex;grid-column:1/-1;border-top:1px solid var(--border);margin-top:4px;padding-top:9px}
+
+  /* Bank activity */
+  #bankTransactionsTableBody td:nth-child(1)::before{content:'Date'}
+  #bankTransactionsTableBody td:nth-child(2)::before{content:'Bank'}
+  #bankTransactionsTableBody td:nth-child(3)::before{content:'Type'}
+  #bankTransactionsTableBody td:nth-child(4)::before{content:'Amount'}
+  #bankTransactionsTableBody td:nth-child(5)::before{content:'Notes'}
+  #bankTransactionsTableBody td:nth-child(6)::before{content:'Actions'}
+  #bankTransactionsTableBody td:nth-child(6){display:flex;grid-column:1/-1;border-top:1px solid var(--border);margin-top:4px;padding-top:9px}
+
+  .bank-grid{grid-template-columns:1fr}
+  .bank-card{padding:14px}
+  .bank-actions{flex-wrap:wrap}
+  .bank-actions .mini-btn{flex:1}
+  .category-row{grid-template-columns:1fr auto}
+  .footer{padding:16px 4px 6px;line-height:1.45}
+}
+
+@media (max-width:430px){
+  .app-shell{padding:8px 8px 16px}
+  .tab{font-size:11px;padding:9px 8px}
+  .top-actions{display:grid;grid-template-columns:1fr 1fr}
+  .top-actions .btn{width:100%;padding:10px 9px;font-size:12px}
+  .section-heading h2{font-size:20px}
+  .stat-card strong{font-size:21px}
+  .stat-card small{font-size:11px}
+  .table-wrap tr{padding:9px}
+  .table-wrap td{grid-template-columns:minmax(70px,34%) 1fr;font-size:12px}
+  .mini-btn{font-size:11px}
+}
+
+@media (max-width:340px){
+  .tabs{overflow-x:auto}
+  .tab{flex:0 0 auto}
+  .month-display{font-size:13px;padding:10px 8px}
+  .stat-card strong{font-size:19px}
+  .table-wrap td{grid-template-columns:1fr;gap:3px}
+  .table-wrap td::before{font-size:9px}
+}
+
+/* =========================================================
+   V8.1 VISUAL POLISH
+   ========================================================= */
+.brand-block{min-width:0}
+.brand-block h1{
+  text-align:center;
+  font-size:clamp(32px,4vw,48px);
+  line-height:1;
+  letter-spacing:-.045em;
+  font-weight:950;
+  background:linear-gradient(100deg,#0a6f5a 0%,#0aa37e 42%,#3477c7 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 8px 22px rgba(10,163,126,.10);
+}
+.brand-block .eyebrow,.brand-block .subtitle{text-align:center}
+.brand-block .eyebrow{letter-spacing:.16em;font-size:10px}
+
+/* Keep native form controls inside their container on narrow screens. */
+dialog{max-width:calc(100vw - 16px);margin:auto;overflow:hidden}
+#modal form{min-width:0}
+.form-grid,.field{min-width:0}
+.field input,.field select,.field textarea{min-width:0;max-width:100%;width:100%}
+.field select{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+@media(max-width:1000px){
+  .brand-block{width:100%}
+}
+
+@media(max-width:700px){
+  .brand-block h1{font-size:34px;letter-spacing:-.04em}
+  .brand-block .subtitle{max-width:34rem;margin-left:auto;margin-right:auto}
+  .top-actions{width:100%}
+  .top-actions .btn,.top-actions .file-btn{min-width:0}
+
+  /* Native selects themselves stay aligned and full-width. */
+  dialog{width:calc(100vw - 16px);padding:0}
+  #modal form{padding:16px}
+  .modal-head{gap:8px}
+  .modal-actions{flex-wrap:wrap}
+  .modal-actions .btn{flex:1 1 140px}
+
+  /* Prevent any form grid child from forcing horizontal overflow. */
+  .form-grid > .field{width:100%;min-width:0}
+  .field label{overflow-wrap:anywhere}
+}
+
+@media(max-width:430px){
+  .top-actions{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
+  .top-actions #exportCsvBtn{
+    grid-column:1 / -1;
+    width:min(220px,100%);
+    justify-self:center;
+  }
+  .brand-block h1{font-size:32px}
+  .brand-block .subtitle{font-size:12px}
+  dialog{width:calc(100vw - 12px)}
+  #modal form{padding:14px}
+  .modal-head{margin-bottom:12px}
+  .modal-head h3{font-size:18px}
+  .modal-actions{gap:7px}
+}
+
+@media(max-width:340px){
+  .top-actions{grid-template-columns:1fr}
+  .top-actions #exportCsvBtn{grid-column:auto;width:100%}
+  .brand-block h1{font-size:29px}
+}
+
+
+/* =========================================================
+   V8.3.3 MOBILE-SAFE CUSTOM DROPDOWNS
+   Native <select> popups are controlled by the browser and may
+   extend outside the modal on narrow screens. These in-app menus
+   remain constrained to the same width as their field.
+   ========================================================= */
+.custom-select{
+  position:relative;
+  width:100%;
+  min-width:0;
+}
+.custom-select .native-select-hidden{
+  position:absolute !important;
+  width:1px !important;
+  height:1px !important;
+  min-width:1px !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+  border:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+}
+.custom-select-trigger{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  width:100%;
+  min-height:44px;
+  padding:11px 36px 11px 12px;
+  border:1px solid #d8e1ec;
+  border-radius:11px;
+  background:#fff;
+  color:var(--text);
+  font:inherit;
+  font-size:16px;
+  font-weight:500;
+  text-align:left;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  position:relative;
+}
+.custom-select-trigger::after{
+  content:'';
+  position:absolute;
+  right:13px;
+  top:50%;
+  width:8px;
+  height:8px;
+  border-right:2px solid #17342d;
+  border-bottom:2px solid #17342d;
+  transform:translateY(-65%) rotate(45deg);
+  transition:transform .15s ease;
+}
+.custom-select.open .custom-select-trigger::after{
+  transform:translateY(-25%) rotate(225deg);
+}
+.custom-select-trigger:focus-visible,
+.custom-select.open .custom-select-trigger{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(10,163,126,.12);
+}
+.custom-select-trigger:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+.custom-select-menu{
+  display:none;
+  position:absolute;
+  left:0;
+  right:0;
+  top:calc(100% + 4px);
+  max-width:100%;
+  max-height:220px;
+  overflow-x:hidden;
+  overflow-y:auto;
+  padding:4px;
+  background:#fff;
+  border:1px solid #d2ddd8;
+  border-radius:10px;
+  box-shadow:0 14px 30px rgba(11,23,45,.18);
+  z-index:10000;
+}
+.custom-select.open .custom-select-menu{display:block}
+.custom-select-option{
+  display:block;
+  width:100%;
+  min-height:40px;
+  padding:9px 11px;
+  border:0;
+  border-radius:7px;
+  background:#fff;
+  color:var(--text);
+  font:inherit;
+  font-size:15px;
+  line-height:1.3;
+  text-align:left;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+.custom-select-option:hover,
+.custom-select-option:focus-visible,
+.custom-select-option.selected{
+  background:var(--accent-soft);
+  color:var(--text);
+  outline:none;
+}
+.custom-select-option:disabled{opacity:.5;cursor:not-allowed}
+
+@media(max-width:700px){
+  .custom-select-trigger{min-height:46px;font-size:16px;padding:11px 34px 11px 12px}
+  .custom-select-menu{max-height:210px;border-radius:9px}
+  .custom-select-option{min-height:42px;font-size:16px;padding:9px 10px}
+}
+
+/* =========================================================
+   V8.3.6 MOBILE ACTION ALIGNMENT
+   ========================================================= */
+.btn.danger{
+  background:#fff1f2;
+  border-color:#f3b7be;
+  color:#b42332;
+  box-shadow:0 4px 12px rgba(180,35,50,.08);
+}
+.btn.danger:hover{
+  background:#ffe4e7;
+  border-color:#e89aa4;
+}
+
+@media(max-width:700px){
+  /* Center the main Bills action on small screens. */
+  #addBillBtn{
+    align-self:center;
+    width:min(260px,100%);
+    text-align:center;
+  }
+}
+
+@media(max-width:430px){
+  /* Top utility buttons: two small buttons on row one,
+     centered Excel and Clear buttons below. */
+  .top-actions{
+    grid-template-columns:1fr 1fr;
+  }
+  .top-actions #exportCsvBtn{
+    grid-column:1 / -1;
+    width:min(220px,100%);
+    justify-self:center;
+  }
+  .top-actions #clearDataBtn{
+    grid-column:1 / -1;
+    width:min(220px,100%);
+    justify-self:center;
+  }
+}
+
+
+/* Dark theme */
+body.dark-theme{
+  --bg:#101816; --panel:#17221f; --text:#eef8f4; --muted:#a7bab3; --border:#2b3b36;
+  --accent:#22c99a; --accent-strong:#18a47d; --accent-soft:#15382f;
+  --success:#36c48a; --success-soft:#163a2e; --danger:#ef6672; --danger-soft:#3b2024;
+  --warning:#e4a13b; --warning-soft:#3b2d18; --info:#5d9be6; --info-soft:#1e3048;
+  --shadow:0 14px 32px rgba(0,0,0,.28);
+  color-scheme:dark;
+}
+body.dark-theme{background:linear-gradient(135deg,#10231d 0%,#171715 45%,#111d2b 100%)}
+body.dark-theme:before{background:radial-gradient(circle at 8% 5%,rgba(34,201,154,.09),transparent 26%),radial-gradient(circle at 90% 8%,rgba(93,155,230,.08),transparent 25%),radial-gradient(circle at 50% 100%,rgba(228,161,59,.04),transparent 28%)}
+body.dark-theme .tabs{background:rgba(23,34,31,.86);border-color:var(--border)}
+body.dark-theme .tab{color:#d5e7e1}
+body.dark-theme .tab:hover{background:#21312c}
+body.dark-theme .btn,
+body.dark-theme .icon-btn,
+body.dark-theme .month-display,
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea,
+body.dark-theme .mini-btn{background:#1a2824;color:var(--text);border-color:#334740}
+body.dark-theme .btn.secondary{background:#1a2824;border-color:#334740}
+body.dark-theme .btn.secondary:hover{background:#22332e}
+body.dark-theme .btn.info{color:#fff}
+body.dark-theme .mini-btn.danger{color:#fff}
+body.dark-theme .table-wrap th{background:#1b2724}
+body.dark-theme .tip-banner{background:linear-gradient(90deg,#17342c,#1a2e3e);color:#c9dad4;border-color:var(--border)}
+body.dark-theme .bank-card{background:linear-gradient(180deg,#1d2b27,#17231f)}
+body.dark-theme .category-bar{background:#26342f}
+body.dark-theme dialog{background:#17221f;color:var(--text)}
+body.dark-theme dialog::backdrop{background:rgba(0,0,0,.62)}
+body.dark-theme .custom-select-trigger,
+body.dark-theme .custom-select-menu{background:#1a2824;color:var(--text);border-color:#334740}
+body.dark-theme .custom-option:hover,
+body.dark-theme .custom-option.active{background:#203a32}
+body.dark-theme .custom-select-option{background:#1a2824;color:var(--text);}
+body.dark-theme .custom-select-option:hover,
+body.dark-theme .custom-select-option:focus-visible,
+body.dark-theme .custom-select-option.selected{background:#203a32;color:var(--text);}
+body.dark-theme .table-wrap tr{background:#17221f;border-color:#334740;box-shadow:0 5px 14px rgba(0,0,0,.20);}
+body.dark-theme .table-wrap td{color:var(--text);}
+body.dark-theme .table-wrap td::before{color:var(--muted);}
+body.dark-theme .table-wrap th{color:var(--muted);}
+body.dark-theme .table-wrap table{background:transparent;}
+body.dark-theme .table-wrap .empty-state{background:transparent;color:var(--muted);}
+body.dark-theme .table-wrap .mini-btn{background:#1a2824;color:var(--text);border-color:#334740;}
+body.dark-theme .table-wrap .mini-btn:hover{background:#22332e;border-color:#486057;}
+.theme-toggle{background:#f3f7f5;border-color:#cbded6}
+body.dark-theme .theme-toggle{background:#25332f;border-color:#41544d;color:#f3fbf8}
+@media(max-width:700px){
+  .theme-toggle{grid-column:1/-1;justify-self:center;width:min(220px,100%)}
+}
+\n\n/* =========================================================\n   V8.3.9 THEME ICON + MOBILE MONTH PICKER + DATE FIX\n   ========================================================= */\n.title-row{display:flex;align-items:center;justify-content:center;gap:10px;min-width:0}\n.title-row h1{margin:0}\n.theme-icon{width:38px;height:38px;border:1px solid #cbded6;border-radius:50%;background:rgba(255,255,255,.82);color:var(--text);display:inline-grid;place-items:center;font-size:19px;line-height:1;box-shadow:0 4px 12px rgba(32,78,64,.08);transition:.16s ease}\n.theme-icon:hover{background:var(--accent-soft);border-color:#a9d9c9;transform:translateY(-1px)}\nbody.dark-theme .theme-icon{background:#1a2824;border-color:#41544d;color:#f3fbf8}\n\n.month-picker-popover{position:fixed;z-index:20000;background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:14px;padding:10px;box-shadow:0 18px 45px rgba(11,23,45,.24);max-width:calc(100vw - 16px)}\n.month-picker-head{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;gap:8px;margin-bottom:9px;text-align:center;font-size:17px}\n.month-picker-nav{width:40px;height:40px;border:1px solid var(--border);border-radius:10px;background:var(--panel);color:var(--text);font-size:23px;line-height:1}\n.month-picker-nav:hover{background:var(--accent-soft);border-color:var(--accent)}\n.month-picker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}\n.month-picker-option{min-height:42px;border:1px solid var(--border);border-radius:9px;background:var(--panel);color:var(--text);font-weight:750}\n.month-picker-option:hover,.month-picker-option:focus-visible{background:var(--accent-soft);border-color:var(--accent);outline:none}\n.month-picker-option.selected{background:var(--accent);border-color:var(--accent);color:#fff}\n.month-picker-today{width:100%;margin-top:8px;min-height:38px;border:0;border-radius:9px;background:var(--accent-soft);color:var(--accent-strong);font-weight:850}\nbody.dark-theme .month-picker-nav,body.dark-theme .month-picker-option{background:#1a2824;color:var(--text);border-color:#334740}\nbody.dark-theme .month-picker-option:hover,body.dark-theme .month-picker-option:focus-visible{background:#203a32}\nbody.dark-theme .month-picker-option.selected{background:var(--accent);color:#fff}\nbody.dark-theme .month-picker-today{background:#15382f;color:#5de0b8}\n\ninput[type="date"]{width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box !important;display:block}\n@media(max-width:700px){\n  .title-row{gap:8px}\n  .theme-icon{width:36px;height:36px;font-size:18px}\n  .field input[type="date"]{min-inline-size:0 !important;inline-size:100% !important;padding-left:12px;padding-right:12px}\n  .month-picker-popover{padding:9px;border-radius:13px}\n  .month-picker-grid{gap:5px}\n  .month-picker-option{min-height:44px;font-size:15px}\n}\n@media(max-width:430px){\n  .theme-icon{width:34px;height:34px;font-size:17px}\n  .month-picker-popover{width:calc(100vw - 16px) !important;left:8px !important}\n}\n
+
+/* =========================================================
+   V8.3.11 INLINE MONTH PICKER — MOBILE RELIABLE
+   ========================================================= */
+.month-picker-overlay{
+  position:fixed;
+  inset:0;
+  z-index:50000;
+  display:grid;
+  place-items:center;
+  padding:16px;
+  background:rgba(8,20,17,.52);
+  -webkit-backdrop-filter:blur(3px);
+  backdrop-filter:blur(3px);
+}
+.month-picker-panel{
+  width:min(390px,100%);
+  max-height:min(620px,calc(100dvh - 32px));
+  overflow:auto;
+  background:var(--panel);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:16px;
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+  -webkit-overflow-scrolling:touch;
+}
+.month-picker-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.month-picker-title-row h3{margin:2px 0 0;font-size:20px}
+.month-picker-close{width:42px;height:42px;flex:0 0 42px;border:1px solid var(--border);border-radius:12px;background:var(--panel);color:var(--text);font-size:27px;line-height:1}
+.month-picker-close:active,.month-picker-nav:active,.month-picker-option:active,.month-picker-today:active{transform:scale(.98)}
+.month-picker-panel .month-picker-head{display:grid;grid-template-columns:48px 1fr 48px;align-items:center;gap:10px;margin-bottom:12px;text-align:center;font-size:19px}
+.month-picker-panel .month-picker-nav{width:48px;height:44px;border:1px solid var(--border);border-radius:11px;background:var(--panel);color:var(--text);font-size:25px;line-height:1}
+.month-picker-panel .month-picker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.month-picker-panel .month-picker-option{min-height:48px;border:1px solid var(--border);border-radius:11px;background:var(--panel);color:var(--text);font-weight:800;font-size:15px;touch-action:manipulation}
+.month-picker-panel .month-picker-option:hover,.month-picker-panel .month-picker-option:focus-visible{background:var(--accent-soft);border-color:var(--accent);outline:none}
+.month-picker-panel .month-picker-option.selected{background:var(--accent);border-color:var(--accent);color:#fff}
+.month-picker-panel .month-picker-today{width:100%;margin-top:10px;min-height:44px;border:0;border-radius:11px;background:var(--accent-soft);color:var(--accent-strong);font-weight:850;font-size:15px;touch-action:manipulation}
+body.dark-theme .month-picker-panel .month-picker-nav,
+body.dark-theme .month-picker-panel .month-picker-option,
+body.dark-theme .month-picker-close{background:#1a2824;color:var(--text);border-color:#334740}
+body.dark-theme .month-picker-panel .month-picker-option:hover,
+body.dark-theme .month-picker-panel .month-picker-option:focus-visible{background:#203a32}
+body.dark-theme .month-picker-panel .month-picker-option.selected{background:var(--accent);color:#fff}
+body.dark-theme .month-picker-panel .month-picker-today{background:#15382f;color:#5de0b8}
+@media(max-width:430px){
+  .month-picker-overlay{padding:10px}
+  .month-picker-panel{padding:14px;border-radius:18px;max-height:calc(100dvh - 20px)}
+  .month-picker-panel .month-picker-grid{gap:6px}
+  .month-picker-panel .month-picker-option{min-height:46px}
+}
+
+
+/* =========================================================
+   V8.3.11 INLINE MONTH PICKER — MOBILE RELIABLE
+   ========================================================= */
+.month-picker-inline{position:relative;min-width:0;display:inline-block}
+.month-picker-inline>input[type="month"]{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.month-picker-menu{display:none;position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:60000;width:min(320px,calc(100vw - 24px));padding:12px;background:var(--panel);border:1px solid var(--border);border-radius:16px;box-shadow:0 18px 50px rgba(11,23,45,.25)}
+.month-picker-inline.open .month-picker-menu{display:block}
+.month-menu-head{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:8px;text-align:center;margin-bottom:9px}
+.month-picker-menu .month-picker-nav{width:42px;height:40px}
+.month-picker-menu .month-picker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.month-picker-menu .month-picker-option{min-height:42px}
+.month-picker-menu .month-picker-today{width:100%;margin-top:8px;min-height:40px}
+@media(max-width:700px){
+  .month-picker-inline{width:100%;min-width:0}
+  .month-control .month-picker-inline{flex:1}
+  .month-picker-inline .month-display{width:100%;min-width:0}
+  .report-month-wrap .month-picker-inline{width:100%}
+  .month-picker-menu{position:fixed;top:auto;bottom:12px;left:50%;transform:translateX(-50%);width:calc(100vw - 20px);max-width:390px;padding:14px;border-radius:18px}
+  .month-picker-inline.open::after{content:"";position:fixed;inset:0;background:rgba(8,20,17,.35);z-index:59999}
+  .month-picker-menu{z-index:60000}
+}
+@media(max-width:430px){
+  .month-picker-menu{width:calc(100vw - 20px)}
+}
+
+/* =========================================================
+   V8.3.12 — ANCHORED MONTH PICKER
+   Opens directly below the existing month field.
+   ========================================================= */
+.month-picker-inline{position:relative;min-width:0;display:inline-block}
+.month-picker-inline .month-picker-menu{
+  display:none;
+  position:absolute;
+  top:calc(100% + 8px);
+  left:50%;
+  transform:translateX(-50%);
+  z-index:60000;
+  width:min(330px, calc(100vw - 24px));
+  max-width:calc(100vw - 24px);
+  padding:14px;
+  background:var(--panel);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:0 18px 50px rgba(11,23,45,.28);
+}
+.month-picker-inline.open .month-picker-menu{display:block}
+.month-picker-inline.open .month-picker-menu::before{
+  content:"";
+  position:absolute;
+  top:-8px;
+  left:50%;
+  width:15px;
+  height:15px;
+  background:var(--panel);
+  border-left:1px solid var(--border);
+  border-top:1px solid var(--border);
+  transform:translateX(-50%) rotate(45deg);
+}
+.month-picker-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.month-picker-title-row .eyebrow{margin:0}
+.month-picker-subtitle{display:block;font-size:18px;line-height:1.2;margin-top:2px}
+.month-picker-close{width:40px;height:40px;flex:0 0 40px;border:1px solid var(--border);border-radius:10px;background:var(--panel);color:var(--text);font-size:25px;line-height:1}
+.month-picker-menu .month-picker-head{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:8px;margin-bottom:9px;text-align:center;font-size:18px}
+.month-picker-menu .month-picker-nav{width:42px;height:40px;border:1px solid var(--border);border-radius:10px;background:var(--panel);color:var(--text);font-size:23px;line-height:1}
+.month-picker-menu .month-picker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.month-picker-menu .month-picker-option{min-height:42px;border:1px solid var(--border);border-radius:9px;background:var(--panel);color:var(--text);font-weight:800}
+.month-picker-menu .month-picker-option:hover,.month-picker-menu .month-picker-option:focus-visible{background:var(--accent-soft);border-color:var(--accent);outline:none}
+.month-picker-menu .month-picker-option.selected{background:var(--accent);border-color:var(--accent);color:#fff}
+.month-picker-menu .month-picker-today{width:100%;margin-top:8px;min-height:40px;border:0;border-radius:9px;background:var(--accent-soft);color:var(--accent-strong);font-weight:850}
+body.dark-theme .month-picker-inline .month-picker-menu{background:#111c19;color:var(--text);border-color:#334740}
+body.dark-theme .month-picker-inline.open .month-picker-menu::before{background:#111c19;border-color:#334740}
+body.dark-theme .month-picker-menu .month-picker-nav,
+body.dark-theme .month-picker-menu .month-picker-option,
+body.dark-theme .month-picker-close{background:#1a2824;color:var(--text);border-color:#334740}
+body.dark-theme .month-picker-menu .month-picker-option:hover,
+body.dark-theme .month-picker-menu .month-picker-option:focus-visible{background:#203a32}
+body.dark-theme .month-picker-menu .month-picker-option.selected{background:var(--accent);color:#fff}
+body.dark-theme .month-picker-menu .month-picker-today{background:#15382f;color:#5de0b8}
+@media(max-width:700px){
+  .month-picker-inline{width:100%}
+  .month-control .month-picker-inline{flex:1}
+  .report-month-wrap .month-picker-inline{flex:1}
+  .month-picker-inline .month-display{width:100%;min-width:0}
+  .month-picker-inline .month-picker-menu{left:0;transform:none;width:100%;max-width:100%;top:calc(100% + 8px);padding:12px}
+  .month-picker-inline.open .month-picker-menu::before{left:50%;}
+  .month-picker-menu .month-picker-option{min-height:44px;font-size:15px}
+}
+
+/* V8.3.13 DARK MODE TABLE/CUSTOM DROPDOWN FIX */
+body.dark-theme .table-card .table-wrap tbody tr {
+  background:var(--panel) !important;
+  color:var(--text) !important;
+  border-color:var(--border) !important;
+  box-shadow:0 5px 14px rgba(0,0,0,.20) !important;
+}
+body.dark-theme .custom-select .custom-select-menu,
+body.dark-theme .custom-select .custom-select-option {
+  background:#1a2824 !important;
+  color:var(--text) !important;
+  border-color:#334740 !important;
+}
+body.dark-theme .custom-select .custom-select-option:hover,
+body.dark-theme .custom-select .custom-select-option:focus-visible,
+body.dark-theme .custom-select .custom-select-option.selected {
+  background:#203a32 !important;
+  color:var(--text) !important;
+}
+body.dark-theme .table-wrap td { color:var(--text) !important; }
+
+/* =========================================================
+   V8.3.14 — CORPORATE GREEN VISUAL THEME
+   Inspired by the approved dark-green dashboard mockup.
+   Keeps all existing functionality while giving the app a
+   cleaner corporate finance appearance.
+   ========================================================= */
+body.dark-theme{
+  --bg:#061c15;
+  --panel:#0b241c;
+  --text:#f3fbf7;
+  --muted:#a7bbb4;
+  --border:#1c5141;
+  --accent:#18c79a;
+  --accent-strong:#0fa87f;
+  --accent-soft:#123d30;
+  --success:#21c58b;
+  --success-soft:#103b2d;
+  --danger:#ef5350;
+  --danger-soft:#4a2025;
+  --warning:#f1c75b;
+  --warning-soft:#463b18;
+  --info:#67b8a1;
+  --info-soft:#153c31;
+  --shadow:0 14px 34px rgba(0,0,0,.24);
+}
+body.dark-theme{
+  background:
+    radial-gradient(circle at 12% 0%,rgba(24,199,154,.16),transparent 28%),
+    radial-gradient(circle at 92% 5%,rgba(16,116,83,.13),transparent 26%),
+    linear-gradient(145deg,#061b14 0%,#071d17 48%,#04130f 100%);
+  color:var(--text);
+}
+body.dark-theme:before{
+  background:
+    radial-gradient(circle at 15% 15%,rgba(24,199,154,.10),transparent 25%),
+    radial-gradient(circle at 85% 30%,rgba(61,180,127,.06),transparent 24%),
+    radial-gradient(circle at 50% 100%,rgba(24,199,154,.05),transparent 30%);
+}
+body.dark-theme .tabs{
+  background:rgba(7,29,23,.86);
+  border-color:#1b4b3c;
+  box-shadow:0 8px 22px rgba(0,0,0,.18);
+}
+body.dark-theme .tab{color:#d9ebe4}
+body.dark-theme .tab:hover{background:#10352a}
+body.dark-theme .tab.active{
+  background:linear-gradient(135deg,#0e9f78,#19c99b);
+  border-color:#18c79a;
+  box-shadow:0 9px 22px rgba(24,199,154,.22);
+}
+body.dark-theme .card,
+body.dark-theme .stat-card,
+body.dark-theme .bank-card{
+  background:linear-gradient(145deg,#0b241c,#0a211a);
+  border-color:#1b4b3c;
+  box-shadow:0 14px 30px rgba(0,0,0,.20);
+}
+body.dark-theme .stat-card.accent{
+  background:linear-gradient(135deg,#087458 0%,#11a77f 58%,#18c79a 100%);
+  border-color:#18c79a;
+}
+body.dark-theme .stat-card.accent span,
+body.dark-theme .stat-card.accent small{color:#e5fff7}
+body.dark-theme .btn,
+body.dark-theme .icon-btn,
+body.dark-theme .mini-btn,
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea,
+body.dark-theme .month-display{
+  background:#0d2a21;
+  color:var(--text);
+  border-color:#285746;
+}
+body.dark-theme .btn:hover,
+body.dark-theme .icon-btn:hover,
+body.dark-theme .mini-btn:hover,
+body.dark-theme .month-display:hover{
+  background:#12382c;
+  border-color:#2b8064;
+}
+body.dark-theme .btn.primary{
+  background:#12b889;
+  border-color:#12b889;
+}
+body.dark-theme .btn.primary:hover{background:#0fa67b;border-color:#0fa67b}
+body.dark-theme .btn.secondary{background:#0d2a21;border-color:#285746}
+body.dark-theme .btn.info{background:#217f6b;border-color:#217f6b}
+body.dark-theme .btn.transfer{background:#236b59;border-color:#236b59}
+body.dark-theme .btn.transfer:hover{background:#1b594a;border-color:#1b594a}
+body.dark-theme .tip-banner{
+  background:linear-gradient(90deg,#0d3026,#0b2720);
+  border-color:#1d5040;
+  color:#bdd1ca;
+}
+body.dark-theme .tip-banner strong{color:#eefaf6}
+body.dark-theme .table-wrap th{background:#0a1f18;color:#a9c0b8}
+body.dark-theme .table-wrap td{border-color:#183f33;color:#e7f3ef!important}
+body.dark-theme .table-wrap tbody tr{background:#0b241c!important}
+body.dark-theme .bank-card{background:linear-gradient(180deg,#0e2b22,#0a211a)}
+body.dark-theme .category-bar{background:#15382e}
+body.dark-theme .category-fill{background:linear-gradient(90deg,#0fa77d,#35d4a7)}
+body.dark-theme .history-row.current{background:#103a2d}
+body.dark-theme .badge.paid{background:#104531;color:#63e2b5}
+body.dark-theme .badge.unpaid{background:#482126;color:#ff8582}
+body.dark-theme .field label{color:#abc0b9}
+body.dark-theme .field-help,.dark-theme .sub,.dark-theme .table-sub{color:#91aaa1}
+body.dark-theme dialog{background:#0a211a;color:var(--text)}
+body.dark-theme dialog::backdrop{background:rgba(1,10,7,.72)}
+body.dark-theme .modal-head{color:var(--text)}
+body.dark-theme .theme-icon{background:#0d2a21;border-color:#2b5f4e;color:#f4fffb}
+body.dark-theme .theme-icon:hover{background:#12382c;border-color:#3a8f71}
+body.dark-theme .footer{color:#78938a}
+
+/* Corporate-green light mode: lighter, clean, still recognizably the same brand. */
+body:not(.dark-theme){
+  background:
+    radial-gradient(circle at 10% 0%,rgba(24,199,154,.13),transparent 26%),
+    radial-gradient(circle at 92% 10%,rgba(64,145,112,.08),transparent 25%),
+    linear-gradient(145deg,#effaf5 0%,#f8fcfa 52%,#edf7f2 100%);
+}
+body:not(.dark-theme) .tabs{background:rgba(250,255,252,.90);border-color:#cde4da}
+body:not(.dark-theme) .tab.active{background:linear-gradient(135deg,#0b956f,#18b98e)}
+body:not(.dark-theme) .stat-card.accent{background:linear-gradient(135deg,#176751,#0aa37e)}
+body:not(.dark-theme) .bank-card{background:linear-gradient(180deg,#fbfffd,#eef8f3)}
+
+/* Header branding closer to the corporate mockup. */
+.brand-block h1{
+  background:linear-gradient(100deg,#08765c 0%,#10b98b 48%,#7be2be 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 8px 24px rgba(16,185,139,.12);
+}
+body.dark-theme .brand-block h1{
+  background:linear-gradient(100deg,#f5fffb 0%,#8ee9c8 55%,#18c79a 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* Give the utility controls a more consistent corporate hierarchy. */
+body.dark-theme .top-actions .btn{border-color:#285746}
+body.dark-theme #exportCsvBtn{background:#176f5a;border-color:#1c9f7c}
+body.dark-theme #clearDataBtn{background:#351d21;border-color:#754047;color:#ffb1ae}
+body.dark-theme #clearDataBtn:hover{background:#482329}
+
+@media(max-width:700px){
+  body.dark-theme .card,body.dark-theme .stat-card{border-radius:16px}
+  body.dark-theme .tabs{background:rgba(7,29,23,.94)}
+}
+
+/* V8.3.15 — Restore corporate-green button and message styling */
+body.dark-theme .btn,
+body.dark-theme .icon-btn,
+body.dark-theme .mini-btn,
+body.dark-theme .icon-mini,
+body.dark-theme .month-display,
+body.dark-theme .custom-select-trigger,
+body.dark-theme .custom-select-option,
+body.dark-theme .month-picker-nav,
+body.dark-theme .month-picker-option,
+body.dark-theme .month-picker-close,
+body.dark-theme .month-picker-today {
+  color: var(--text) !important;
+  background-color: #0d2a21 !important;
+  border-color: #285746 !important;
+  opacity: 1 !important;
+}
+
+body.dark-theme .btn.primary,
+body.dark-theme .btn.primary.prominent,
+body.dark-theme .btn.success,
+body.dark-theme .mini-btn.success-action,
+body.dark-theme .month-picker-option.selected {
+  color: #fff !important;
+  background: linear-gradient(135deg,#0e9f78,#18c79a) !important;
+  border-color: #18c79a !important;
+}
+
+body.dark-theme .btn.info {
+  color: #fff !important;
+  background: #176f5a !important;
+  border-color: #1c9f7c !important;
+}
+
+body.dark-theme .btn.transfer {
+  color: #fff !important;
+  background: #236b59 !important;
+  border-color: #2c876e !important;
+}
+
+body.dark-theme .btn.danger,
+body.dark-theme #clearDataBtn {
+  color: #ffb1ae !important;
+  background: #351d21 !important;
+  border-color: #754047 !important;
+}
+
+body.dark-theme .btn.danger:hover,
+body.dark-theme #clearDataBtn:hover {
+  background: #482329 !important;
+}
+
+body.dark-theme .btn.secondary,
+body.dark-theme .file-btn {
+  color: var(--text) !important;
+  background: #0d2a21 !important;
+  border-color: #285746 !important;
+}
+
+body.dark-theme .btn:hover,
+body.dark-theme .icon-btn:hover,
+body.dark-theme .mini-btn:hover,
+body.dark-theme .icon-mini:hover,
+body.dark-theme .month-display:hover,
+body.dark-theme .custom-select-trigger:hover {
+  color: var(--text) !important;
+  background: #12382c !important;
+  border-color: #2b8064 !important;
+}
+
+body.dark-theme .mini-btn.danger {
+  color: #fff !important;
+  background: #c83b48 !important;
+  border-color: #c83b48 !important;
+}
+
+/* Toast/message box: never use the light text variable as its background. */
+body.dark-theme .toast {
+  background: #0d2a21 !important;
+  color: #f3fbf7 !important;
+  border: 1px solid #2b8064 !important;
+  box-shadow: 0 14px 34px rgba(0,0,0,.38) !important;
+}
+
+/* Keep the top utility controls visible and readable on narrow screens. */
+@media(max-width:700px){
+  body.dark-theme .top-actions .btn,
+  body.dark-theme .top-actions .file-btn {
+    color: var(--text) !important;
+    text-shadow: none !important;
+  }
+  body.dark-theme .top-actions #exportCsvBtn {
+    color: #fff !important;
+    background: #176f5a !important;
+  }
+  body.dark-theme .top-actions #clearDataBtn {
+    color: #ffb1ae !important;
+    background: #351d21 !important;
+  }
+}
+
+/* V8.3.16 — mobile date-field alignment only. Keep existing labels/names unchanged. */
+@media (max-width: 700px){
+  #modal input[type="date"]{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+    display:block !important;
+    text-align:left !important;
+    text-align-last:left !important;
+    padding-left:16px !important;
+    padding-right:42px !important;
+    font-size:16px !important;
+    line-height:1.2 !important;
+    overflow:hidden !important;
+  }
+
+  /* iOS Safari uses an internal date-value element that can otherwise center
+     the date and make the control appear to run beyond its field. */
+  #modal input[type="date"]::-webkit-date-and-time-value{
+    text-align:left !important;
+    width:100% !important;
+    margin:0 !important;
+  }
+
+  #modal input[type="date"]::-webkit-calendar-picker-indicator{
+    margin-left:auto !important;
+    margin-right:0 !important;
+    padding:0 !important;
+  }
+}

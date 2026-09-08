@@ -1,0 +1,25 @@
+{
+  "name": "Bill Tracker",
+  "short_name": "Bill Tracker",
+  "description": "A simple personal bill, expense, bank and cash tracker.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4fbf7",
+  "theme_color": "#0aa37e",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
